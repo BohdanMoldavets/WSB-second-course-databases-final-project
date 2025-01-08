@@ -22,12 +22,12 @@ public class Salary {
     private float amount;
 
     @Column(name="currency")
-    private float currency;
+    private String currency;
 
     public Salary() {
     }
 
-    public Salary(Employee employee, float amount, float currency) {
+    public Salary(Employee employee, float amount, String currency) {
         this.employee = employee;
         this.amount = amount;
         this.currency = currency;
