@@ -10,7 +10,7 @@
 
 <body>
 <div class="container">
-    <div id="loginbox" style="margin-top: 50px;" class="col-md-3 col-md-offset-2 col-sm-6 col-sm-offset-2">
+    <div id="loginbox" style="margin-top: 50px;" class="col-md-3 col-md-offset-2 col-sm-6 col-sm-offset-2 align-self-center">
         <div class="card border-info">
             <div class="card-header bg-info">
                 Sign In
@@ -29,6 +29,12 @@
                                         </div>
                                     </div>
 
+                                    <div th:if="${param.logout}">
+                                        <div class="alert alert-success col-xs-offset-1 col-xs-10">
+                                            You logged out successfully!
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -41,14 +47,18 @@
                             <input type="password" name="password" placeholder="Password" class="form-control" />
                         </div>
 
-                        <div style="margin-top: 10px;" class="form-group">
-                            <div class="col-sm-6 controls">
-                                <button type="submit" class="btn btn-success">Login</button>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="margin-top: 10px;" class="form-group">
+                                <div class="col-sm-6 controls">
+                                    <button type="submit" class="btn btn-success">Login</button>
+                                </div>
+                            </div>
+
+                            <div style="margin-top: 10px; float: right" class="form-group">
+                                <a th:href="@{/}">Skip</a>
                             </div>
                         </div>
-
                     </form>
-
                 </div>
             </div>
         </div>

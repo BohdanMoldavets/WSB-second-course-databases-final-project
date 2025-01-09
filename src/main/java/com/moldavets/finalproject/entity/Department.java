@@ -13,7 +13,7 @@ public class Department {
     @Column(name="id")
     private int id;
 
-    @Column(name="abbreviation")
+    @Column(name="abbreviation", length = 3)
     private String abbreviation;
 
     @Column(name="name")

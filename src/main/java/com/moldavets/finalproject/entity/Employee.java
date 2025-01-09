@@ -1,10 +1,11 @@
 package com.moldavets.finalproject.entity;
 
+import com.moldavets.finalproject.utils.DateUtils;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.Date;
+import java.util.stream.Stream;
 
-@Data
 @Entity
 @Table(name="employees")
 public class Employee {
@@ -42,5 +43,75 @@ public class Employee {
         this.lastName = lastName;
         this.department = department;
         this.birthday = birthday;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public java.util.Date getBirthday() {
+        return birthday;
+    }
+
+
+    public void setBirthday(String birthday) {
+        this.birthday = DateUtils.parseStringToDate(birthday);
+    }
+
+//    public void setBirthday(Date birthday) {
+//        this.birthday = birthday;
+//    }
+
+    public Salary getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Salary salary) {
+        this.salary = salary;
+    }
+
+    public com.moldavets.finalproject.entity.Date getDate() {
+        return date;
+    }
+
+    public void setDate(com.moldavets.finalproject.entity.Date date) {
+        this.date = date;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", department='" + department + '\'' +
+                ", birthday=" + birthday +
+                ", salary=" + salary +
+                ", date=" + date +
+                '}';
     }
 }

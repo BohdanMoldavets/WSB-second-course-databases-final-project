@@ -23,13 +23,14 @@ public class SecurityConfig {
         http.authorizeHttpRequests(configurer ->
                 configurer
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/employees/list").permitAll()
                         .anyRequest().authenticated()
         ).formLogin(form ->
                 form
                         .loginPage("/login")
                         .loginProcessingUrl("/authenticate")
                         .permitAll()
-        ).logout(logout -> logout.permitAll());
+        ).logout(logout -> logout.permitAll().logoutSuccessUrl("/login?logout"));
         return http.build();
     }
 }
