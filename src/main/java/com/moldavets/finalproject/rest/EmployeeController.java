@@ -4,10 +4,7 @@ import com.moldavets.finalproject.entity.Employee;
 import com.moldavets.finalproject.service.EmployeeService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,6 +34,12 @@ public class EmployeeController {
     @PostMapping("/save")
     public String save(@ModelAttribute("employee") Employee employee) {
         employeeService.save(employee);
+        return "redirect:/";
+    }
+
+    @PostMapping("/delete")
+    public String delete(@RequestParam("employeeId") int employeeId) {
+        employeeService.deleteById((long) employeeId);
         return "redirect:/";
     }
 

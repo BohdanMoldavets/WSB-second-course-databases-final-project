@@ -28,4 +28,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeRepository.save(employee);
     }
 
+    @Override
+    @Transactional
+    public void deleteById(Long id) {
+        if(employeeRepository.existsById(id)) {
+            employeeRepository.deleteById(id);
+        }
+    }
+
 }
