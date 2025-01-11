@@ -2,8 +2,10 @@ package com.moldavets.finalproject.rest;
 
 import com.moldavets.finalproject.entity.Employee;
 import com.moldavets.finalproject.service.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,8 +33,19 @@ public class EmployeeController {
         return "employeeAddForm";
     }
 
+    @GetMapping("/updateForm")
+    public String getUpdateEmployeePage(@RequestParam("employeeId") int employeeId,
+                                        Model model) {
+        Employee employee = employeeService.getById((long) employeeId);
+        model.addAttribute("employee", employee);
+        return "employeeUpdateForm";
+    }
+
     @PostMapping("/save")
-    public String save(@ModelAttribute("employee") Employee employee) {
+    public String save(@ModelAttribute("employee") @Valid Employee employee, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            return "employeeAddForm";
+        }
         employeeService.save(employee);
         return "redirect:/";
     }

@@ -58,18 +58,18 @@
             <td th:text="${employee.firstName}" />
             <td th:text="${employee.lastName}" />
             <td th:text="${employee.department}" />
-            <td th:text="${employee.birthday}" />
+            <td th:text="${employee.getBirthdayString()}" />
 
             <td sec:authorize="hasRole('MANAGER')">
                 <div class="row">
 
                     <div class="col-small">
-<!--                        <form action="#" th:action="@{/employees/showFormForUpdate}" method="POST">-->
+                        <form action="#" sec:authorize="hasRole('MANAGER')" th:action="@{/employees/updateForm}">
 
-<!--                            <input type="hidden" name="employeeId" th:value="${tempEmployee.id}" />-->
-<!--                            <button type="submit" class="btn btn-info btn-sm me-1" style="float:left;">Update</button>-->
+                            <input type="hidden" name="employeeId" th:value="${employee.id}" />
+                            <button type="submit" class="btn btn-info btn-sm me-1" style="float:left;">Update</button>
 
-<!--                        </form>-->
+                        </form>
 
                         <form action="#" sec:authorize="hasRole('ADMIN')" th:action="@{/employees/delete}" method="POST">
 

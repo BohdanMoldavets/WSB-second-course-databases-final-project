@@ -2,6 +2,9 @@ package com.moldavets.finalproject.entity;
 
 import com.moldavets.finalproject.utils.DateUtils;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 import java.util.Date;
 import java.util.stream.Stream;
@@ -15,15 +18,22 @@ public class Employee {
     @Column(name="id")
     private int id;
 
+    @NotNull(message = "is required")
+    @Size(min=1, max = 50, message = "is required")
     @Column(name="first_name")
     private String firstName;
 
+    @NotNull(message = "is required")
+    @Size(min=1, max = 50, message = "is required")
     @Column(name="last_name")
     private String lastName;
 
-    @Column(name="department")
+    @NotNull(message = "is required")
+    @Size(max = 3)
+    @Column(name="department", length = 3)
     private String department;
 
+    @NotNull(message = "is required")
     @Column(name="birthday")
     private java.util.Date birthday;
 
@@ -47,6 +57,10 @@ public class Employee {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -77,6 +91,13 @@ public class Employee {
         return birthday;
     }
 
+    public String getBirthdayString() {
+        return DateUtils.parseDateToString(this.birthday);
+    }
+
+    public void setBirthdayString(String birthday) {
+        this.birthday = DateUtils.parseStringToDate(birthday);
+    }
 
     public void setBirthday(String birthday) {
         this.birthday = DateUtils.parseStringToDate(birthday);
