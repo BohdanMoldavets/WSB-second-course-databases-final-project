@@ -31,8 +31,12 @@
     <input type="text" th:field="*{lastName}" placeholder="Last Name" class="form-control mb-4 w-25"/>
 
 
-    <span th:if="${#fields.hasErrors('department')}" th:errors="*{department}" class="error"></span>
-    <input type="text" th:field="*{department}" placeholder="Department" class="form-control mb-4 w-25"/>
+    <select class="btn btn-primary dropdown-toggle"
+            th:field="*{department}" style="margin-bottom: 18px">
+      <option th:each="tempDepartment : ${departments}"
+              th:value="${tempDepartment.abbreviation}"
+              th:text="${tempDepartment.name}"/>
+    </select>
 
 
     <span th:if="${#fields.hasErrors('birthday')}" class="error" th:errors="*{birthday}"></span>

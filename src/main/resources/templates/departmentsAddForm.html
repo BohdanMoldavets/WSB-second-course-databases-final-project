@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <style>
+        .error {
+            color: red;
+        }
+    </style>
+    <title>Add Department Form</title>
+</head>
+<body>
+
+
+<div class="container">
+    <p class="h4 mb-4">Save Department</p>
+    <hr>
+    <form action="#" th:action="@{/departments/save}"
+          th:object="${departments}" method="POST">
+
+        <span th:if="${#fields.hasErrors('abbreviation')}" th:errors="*{abbreviation}" class="error"></span>
+        <input type="text" th:field="*{abbreviation}" placeholder="Abbreviation" class="form-control mb-4 w-25" />
+
+        <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></span>
+        <input type="text" th:field="*{name}" placeholder="Department's name" class="form-control mb-4 w-25"/>
+
+        <input type="submit" value="Save" class="btn btn-info col-2">
+    </form>
+    <a th:href="@{/departments/}">Back to previous page</a>
+</div>
+
+
+
+</body>
+</html>

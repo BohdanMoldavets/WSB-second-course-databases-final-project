@@ -1,8 +1,10 @@
 package com.moldavets.finalproject.rest;
 
 import com.moldavets.finalproject.entity.Employee;
+import com.moldavets.finalproject.service.DepartmentService;
 import com.moldavets.finalproject.service.EmployeeService;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,10 +18,13 @@ import java.util.List;
 @RequestMapping("/employees")
 public class EmployeeController {
 
-    private final EmployeeService employeeService;
+    private final EmployeeService EMPLOYEE_SERVICE;
+    private final DepartmentService DEPARTMENT_SERVICE;
 
-    public EmployeeController(EmployeeService employeeService) {
-        this.employeeService = employeeService;
+    @Autowired
+    public EmployeeController(EmployeeService employeeService, DepartmentService departmentService) {
+        this.EMPLOYEE_SERVICE = employeeService;
+        this.DEPARTMENT_SERVICE = departmentService;
     }
 
     @InitBinder
@@ -28,9 +33,9 @@ public class EmployeeController {
         binder.registerCustomEditor(String.class, stringTrimmerEditor);
     }
 
-    @GetMapping("/list")
+    @GetMapping("/")
     public String listEmployees(Model model) {
-        List<Employee> employees = employeeService.getAll();
+        List<Employee> employees = EMPLOYEE_SERVICE.getAll();
         model.addAttribute("employees", employees);
         return "publicPage";
     }
@@ -38,14 +43,16 @@ public class EmployeeController {
     @GetMapping("/add")
     public String getAddEmployeePage(Model model) {
         model.addAttribute("employee", new Employee());
+        model.addAttribute("departments", DEPARTMENT_SERVICE.getAll());
         return "employeeAddForm";
     }
 
     @GetMapping("/updateForm")
     public String getUpdateEmployeePage(@RequestParam("employeeId") int employeeId,
                                         Model model) {
-        Employee employee = employeeService.getById((long) employeeId);
+        Employee employee = EMPLOYEE_SERVICE.getById(employeeId);
         model.addAttribute("employee", employee);
+        model.addAttribute("departments", DEPARTMENT_SERVICE.getAll());
         return "employeeUpdateForm";
     }
 
@@ -55,7 +62,7 @@ public class EmployeeController {
         if(bindingResult.hasErrors()) {
             return "redirect:/employees/updateForm?employeeId="+employee.getId()+"&error";
         }
-        employeeService.save(employee);
+        EMPLOYEE_SERVICE.save(employee);
         return "redirect:/";
     }
 
@@ -65,13 +72,13 @@ public class EmployeeController {
         if(bindingResult.hasErrors()) {
             return "employeeAddForm";
         }
-        employeeService.save(employee);
+        EMPLOYEE_SERVICE.save(employee);
         return "redirect:/";
     }
 
     @PostMapping("/delete")
     public String delete(@RequestParam("employeeId") int employeeId) {
-        employeeService.deleteById((long) employeeId);
+        EMPLOYEE_SERVICE.deleteById(employeeId);
         return "redirect:/";
     }
 
