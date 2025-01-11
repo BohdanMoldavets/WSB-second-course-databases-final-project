@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="dates")
-public class Date {
+public class DateStamp {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +23,10 @@ public class Date {
     @Column(name="payment_date")
     private java.util.Date paymentDate;
 
-    public Date() {
+    public DateStamp() {
     }
 
-    public Date(Employee employee, java.util.Date employmentDate, java.util.Date paymentDate) {
+    public DateStamp(Employee employee, java.util.Date employmentDate, java.util.Date paymentDate) {
         this.employee = employee;
         this.employmentDate = employmentDate;
         this.paymentDate = paymentDate;

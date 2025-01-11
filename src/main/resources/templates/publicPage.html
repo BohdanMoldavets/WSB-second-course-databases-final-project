@@ -39,6 +39,11 @@
         Add Employee
     </a>
 
+    <a sec:authorize="hasRole('MANAGER')" th:href="@{/employees/add}"
+       class="btn btn-primary btn-sm mb-3">
+        Add Employee
+    </a>
+
     <table class="table table-bordered table-striped">
         <thead class="table-dark">
         <tr>
@@ -58,7 +63,7 @@
             <td th:text="${employee.firstName}" />
             <td th:text="${employee.lastName}" />
             <td th:text="${employee.department}" />
-            <td th:text="${employee.getBirthdayString()}" />
+            <td th:text="${employee.birthday}" />
 
             <td sec:authorize="hasRole('MANAGER')">
                 <div class="row">

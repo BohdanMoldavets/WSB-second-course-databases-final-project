@@ -17,33 +17,26 @@
 <div class="container">
   <p class="h4 mb-4">Update Employee</p>
   <hr>
-  <form action="#" th:action="@{/employees/save}"
+  <form action="#" th:action="@{/employees/update}"
         th:object="${employee}" method="POST">
 
-    <input type="text" th:field="*{id}" placeholder="Id"  class="form-control mb-4 w-25" />
-    <span th:if="${#fields.hasErrors('id')}"
-          th:errors="*{id}"
-          class="error"></span>
+    <input type="hidden" th:field="*{id}">
 
+    <span th:if="${param.error}" style="color: red">Something went wrong..</span>
+
+    <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error"></span>
     <input type="text" th:field="*{firstName}" placeholder="First Name"  class="form-control mb-4 w-25" />
-    <span th:if="${#fields.hasErrors('firstName')}"
-          th:errors="*{firstName}"
-          class="error"></span>
 
+    <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error"></span>
     <input type="text" th:field="*{lastName}" placeholder="Last Name" class="form-control mb-4 w-25"/>
-    <span th:if="${#fields.hasErrors('lastName')}"
-          th:errors="*{lastName}"
-          class="error"></span>
 
+
+    <span th:if="${#fields.hasErrors('department')}" th:errors="*{department}" class="error"></span>
     <input type="text" th:field="*{department}" placeholder="Department" class="form-control mb-4 w-25"/>
-    <span th:if="${#fields.hasErrors('department')}"
-          th:errors="*{department}"
-          class="error"></span>
 
-    <input type="date" th:field="*{birthdayString}" placeholder="Birthday" class="form-control mb-4 w-25"/>
-    <span th:if="${#fields.hasErrors('birthdayString')}"
-          th:errors="*{birthdayString}"
-          class="error"></span>
+
+    <span th:if="${#fields.hasErrors('birthday')}" class="error" th:errors="*{birthday}"></span>
+    <input type="date" th:field="*{birthday}" placeholder="Birthday" class="form-control mb-4 w-25"/>
 
     <input type="submit" value="Update" class="btn btn-info col-2">
   </form>

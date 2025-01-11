@@ -3,9 +3,11 @@ package com.moldavets.finalproject.rest;
 import com.moldavets.finalproject.entity.Employee;
 import com.moldavets.finalproject.service.EmployeeService;
 import jakarta.validation.Valid;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,6 +20,12 @@ public class EmployeeController {
 
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+        binder.registerCustomEditor(String.class, stringTrimmerEditor);
     }
 
     @GetMapping("/list")
@@ -41,8 +49,19 @@ public class EmployeeController {
         return "employeeUpdateForm";
     }
 
+    @PostMapping("/update")
+    public String update(@Valid @ModelAttribute Employee employee,
+                         BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) {
+            return "redirect:/employees/updateForm?employeeId="+employee.getId()+"&error";
+        }
+        employeeService.save(employee);
+        return "redirect:/";
+    }
+
     @PostMapping("/save")
-    public String save(@ModelAttribute("employee") @Valid Employee employee, BindingResult bindingResult) {
+    public String save(@Valid @ModelAttribute("employee") Employee employee,
+                       BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
             return "employeeAddForm";
         }
