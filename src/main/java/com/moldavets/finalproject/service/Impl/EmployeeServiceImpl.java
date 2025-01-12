@@ -13,11 +13,9 @@ import java.util.List;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository EMPLOYEE_REPOSITORY;
-    private final EntityManager ENTITY_MANAGER;
 
-    public EmployeeServiceImpl (EmployeeRepository employeeRepository, EntityManager entityManager) {
+    public EmployeeServiceImpl (EmployeeRepository employeeRepository) {
         this.EMPLOYEE_REPOSITORY = employeeRepository;
-        this.ENTITY_MANAGER = entityManager;
     }
 
     @Override
@@ -26,7 +24,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee getById(Long id) {
+    public Employee getById(int id) {
         return EMPLOYEE_REPOSITORY.findById(id).orElse(null);
     }
 
@@ -38,7 +36,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     @Transactional
-    public void deleteById(Long id) {
+    public void deleteById(int id) {
         if(EMPLOYEE_REPOSITORY.existsById(id)) {
             EMPLOYEE_REPOSITORY.deleteById(id);
         }

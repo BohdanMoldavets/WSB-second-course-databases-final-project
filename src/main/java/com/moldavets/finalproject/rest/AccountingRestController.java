@@ -8,7 +8,7 @@ public class AccountingRestController {
 
     @GetMapping("/")
     public String landingPage() {
-        return "redirect:/employees/list";
+        return "redirect:/employees/";
     }
 
 }

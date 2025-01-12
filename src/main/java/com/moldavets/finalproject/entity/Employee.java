@@ -1,13 +1,10 @@
 package com.moldavets.finalproject.entity;
 
-import com.moldavets.finalproject.utils.DateUtils;
+
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.Data;
-import java.util.Date;
-import java.util.stream.Stream;
 
 @Entity
 @Table(name="employees")
@@ -20,22 +17,24 @@ public class Employee {
 
     @NotNull(message = "is required")
     @Size(min=1, max = 50, message = "is required")
+    @Pattern(regexp = "([A-Za-z])+", message = "Only letters are allowed for this field")
     @Column(name="first_name")
     private String firstName;
 
     @NotNull(message = "is required")
     @Size(min=1, max = 50, message = "is required")
+    @Pattern(regexp = "([A-Za-z])+", message = "Only letters are allowed for this field")
     @Column(name="last_name")
     private String lastName;
 
     @NotNull(message = "is required")
-    @Size(max = 3)
-    @Column(name="department", length = 3)
+    @Size(max = 3, message = "is required")
+    @Column(name="department", length = 3, nullable = false)
     private String department;
 
     @NotNull(message = "is required")
     @Column(name="birthday")
-    private java.util.Date birthday;
+    private String birthday;
 
     @OneToOne(mappedBy = "employee",
               cascade = CascadeType.ALL)
@@ -43,12 +42,12 @@ public class Employee {
 
     @OneToOne(mappedBy = "employee",
             cascade = CascadeType.ALL)
-    private com.moldavets.finalproject.entity.Date date;
+    private DateStamp date;
 
     public Employee() {
     }
 
-    public Employee(String firstName, String lastName, String department, Date birthday) {
+    public Employee(String firstName, String lastName, String department, String birthday) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.department = department;
@@ -87,25 +86,13 @@ public class Employee {
         this.department = department;
     }
 
-    public java.util.Date getBirthday() {
+    public String getBirthday() {
         return birthday;
     }
 
-    public String getBirthdayString() {
-        return DateUtils.parseDateToString(this.birthday);
-    }
-
-    public void setBirthdayString(String birthday) {
-        this.birthday = DateUtils.parseStringToDate(birthday);
-    }
-
     public void setBirthday(String birthday) {
-        this.birthday = DateUtils.parseStringToDate(birthday);
+        this.birthday = birthday;
     }
-
-//    public void setBirthday(Date birthday) {
-//        this.birthday = birthday;
-//    }
 
     public Salary getSalary() {
         return salary;
@@ -115,24 +102,11 @@ public class Employee {
         this.salary = salary;
     }
 
-    public com.moldavets.finalproject.entity.Date getDate() {
+    public DateStamp getDate() {
         return date;
     }
 
-    public void setDate(com.moldavets.finalproject.entity.Date date) {
+    public void setDate(DateStamp date) {
         this.date = date;
-    }
-
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", department='" + department + '\'' +
-                ", birthday=" + birthday +
-                ", salary=" + salary +
-                ", date=" + date +
-                '}';
     }
 }
