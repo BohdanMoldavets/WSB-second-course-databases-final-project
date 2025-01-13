@@ -25,10 +25,12 @@
         <span th:if="${param.error}" style="color: red">Something went wrong..</span>
 
         <span th:if="${#fields.hasErrors('abbreviation')}" th:errors="*{abbreviation}" class="error"></span>
-        <input type="text" th:field="*{abbreviation}" placeholder="First Name"  class="form-control mb-4 w-25" />
+        Abbreviation
+        <input type="text" th:field="*{abbreviation}" placeholder="Abbreviation"  class="form-control mb-4 w-25" />
 
         <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></span>
-        <input type="text" th:field="*{name}" placeholder="Last Name" class="form-control mb-4 w-25"/>
+        Department's name
+        <input type="text" th:field="*{name}" placeholder="Department's name" class="form-control mb-4 w-25"/>
 
         <input type="submit" value="Update" class="btn btn-info col-2">
     </form>

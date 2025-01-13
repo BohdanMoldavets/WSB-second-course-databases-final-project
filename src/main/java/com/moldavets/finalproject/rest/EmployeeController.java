@@ -1,8 +1,10 @@
 package com.moldavets.finalproject.rest;
 
 import com.moldavets.finalproject.entity.Employee;
+import com.moldavets.finalproject.entity.Salary;
 import com.moldavets.finalproject.service.DepartmentService;
 import com.moldavets.finalproject.service.EmployeeService;
+import com.moldavets.finalproject.service.SalaryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -20,11 +22,15 @@ public class EmployeeController {
 
     private final EmployeeService EMPLOYEE_SERVICE;
     private final DepartmentService DEPARTMENT_SERVICE;
+    private final SalaryService SALARY_SERVICE;
 
     @Autowired
-    public EmployeeController(EmployeeService employeeService, DepartmentService departmentService) {
+    public EmployeeController(EmployeeService employeeService,
+                              DepartmentService departmentService,
+                              SalaryService salaryService) {
         this.EMPLOYEE_SERVICE = employeeService;
         this.DEPARTMENT_SERVICE = departmentService;
+        this.SALARY_SERVICE = salaryService;
     }
 
     @InitBinder
@@ -37,14 +43,14 @@ public class EmployeeController {
     public String listEmployees(Model model) {
         List<Employee> employees = EMPLOYEE_SERVICE.getAll();
         model.addAttribute("employees", employees);
-        return "publicPage";
+        return "employees/employees";
     }
 
     @GetMapping("/add")
     public String getAddEmployeePage(Model model) {
         model.addAttribute("employee", new Employee());
         model.addAttribute("departments", DEPARTMENT_SERVICE.getAll());
-        return "employeeAddForm";
+        return "employees/employeesAddForm";
     }
 
     @GetMapping("/updateForm")
@@ -53,15 +59,17 @@ public class EmployeeController {
         Employee employee = EMPLOYEE_SERVICE.getById(employeeId);
         model.addAttribute("employee", employee);
         model.addAttribute("departments", DEPARTMENT_SERVICE.getAll());
-        return "employeeUpdateForm";
+        return "employees/employeesUpdateForm";
     }
 
     @PostMapping("/update")
     public String update(@Valid @ModelAttribute Employee employee,
                          BindingResult bindingResult) {
+
         if(bindingResult.hasErrors()) {
             return "redirect:/employees/updateForm?employeeId="+employee.getId()+"&error";
         }
+
         EMPLOYEE_SERVICE.save(employee);
         return "redirect:/";
     }
@@ -69,9 +77,14 @@ public class EmployeeController {
     @PostMapping("/save")
     public String save(@Valid @ModelAttribute("employee") Employee employee,
                        BindingResult bindingResult) {
+
         if(bindingResult.hasErrors()) {
-            return "employeeAddForm";
+            return "redirect:/employees/add?&error";
         }
+
+        Salary tempSalary = employee.getSalary();
+        tempSalary.setEmployee(employee);
+        SALARY_SERVICE.save(tempSalary);
         EMPLOYEE_SERVICE.save(employee);
         return "redirect:/";
     }

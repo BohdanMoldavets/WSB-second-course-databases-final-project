@@ -1,7 +1,6 @@
 package com.moldavets.finalproject.rest;
 
 import com.moldavets.finalproject.entity.Department;
-import com.moldavets.finalproject.entity.Employee;
 import com.moldavets.finalproject.service.DepartmentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,27 +34,27 @@ public class DepartmentController {
     public String listDepartments(Model model) {
         List<Department> departments = DEPARTMENT_SERVICE.getAll();
         model.addAttribute("departments", departments);
-        return "departments";
+        return "departments/departments";
     }
 
     @GetMapping("/add")
     public String addDepartment(Model model) {
         model.addAttribute("departments", new Department());
-        return "departmentsAddForm";
+        return "departments/departmentsAddForm";
     }
 
     @GetMapping("/updateForm")
     public String updateForm(@RequestParam("departmentId") int departmentId,
                              Model model) {
         model.addAttribute("department", DEPARTMENT_SERVICE.getById(departmentId));
-        return "departmentsUpdateForm";
+        return "departments/departmentsUpdateForm";
     }
 
     @PostMapping("/save")
     public String saveDepartment(@Valid @ModelAttribute("departments") Department department,
                                  BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
-            return "departmentsAddForm";
+            return "departments/departmentsAddForm";
         }
         DEPARTMENT_SERVICE.save(department);
         return "redirect:/departments/";
@@ -76,7 +75,4 @@ public class DepartmentController {
         DEPARTMENT_SERVICE.delete(departmentId);
         return "redirect:/departments/";
     }
-
-
-
 }

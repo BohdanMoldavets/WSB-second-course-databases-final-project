@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="dates")
+@Table(name="date_stamps")
 public class DateStamp {
 
     @Id

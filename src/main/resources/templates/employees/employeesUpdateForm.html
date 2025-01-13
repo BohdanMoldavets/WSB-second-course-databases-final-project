@@ -22,15 +22,16 @@
 
     <input type="hidden" th:field="*{id}">
 
-    <span th:if="${param.error}" style="color: red">Something went wrong..</span>
+    <span th:if="${param.error}" style="color: red">Something went wrong.. Don't forget that all fields must be non-empty</span>
 
-    <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error"></span>
+    First Name
     <input type="text" th:field="*{firstName}" placeholder="First Name"  class="form-control mb-4 w-25" />
 
-    <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error"></span>
+    Last Name
     <input type="text" th:field="*{lastName}" placeholder="Last Name" class="form-control mb-4 w-25"/>
 
-
+    Department
+    <br>
     <select class="btn btn-primary dropdown-toggle"
             th:field="*{department}" style="margin-bottom: 18px">
       <option th:each="tempDepartment : ${departments}"
@@ -38,8 +39,8 @@
               th:text="${tempDepartment.name}"/>
     </select>
 
-
-    <span th:if="${#fields.hasErrors('birthday')}" class="error" th:errors="*{birthday}"></span>
+    <br>
+    Birthday
     <input type="date" th:field="*{birthday}" placeholder="Birthday" class="form-control mb-4 w-25"/>
 
     <input type="submit" value="Update" class="btn btn-info col-2">
