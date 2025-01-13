@@ -27,9 +27,8 @@ public class Employee {
     @Column(name="last_name")
     private String lastName;
 
-    @NotNull(message = "is required")
     @Size(max = 3, message = "is required")
-    @Column(name="department", length = 3, nullable = false)
+    @Column(name="department", length = 3)
     private String department;
 
     @NotNull(message = "is required")

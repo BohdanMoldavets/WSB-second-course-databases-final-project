@@ -3,6 +3,7 @@ package com.moldavets.finalproject.service.Impl;
 import com.moldavets.finalproject.dao.DepartmentRepository;
 import com.moldavets.finalproject.entity.Department;
 import com.moldavets.finalproject.service.DepartmentService;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,10 +14,12 @@ import java.util.List;
 public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository DEPARTMENT_REPOSITORY;
+    private final EntityManager ENTITY_MANAGER;
 
     @Autowired
-    public DepartmentServiceImpl(DepartmentRepository departmentRepository) {
-        DEPARTMENT_REPOSITORY = departmentRepository;
+    public DepartmentServiceImpl(DepartmentRepository departmentRepository, EntityManager entityManager) {
+        this.DEPARTMENT_REPOSITORY = departmentRepository;
+        this.ENTITY_MANAGER = entityManager;
     }
 
     @Override
@@ -35,11 +38,15 @@ public class DepartmentServiceImpl implements DepartmentService {
         DEPARTMENT_REPOSITORY.save(department);
     }
 
-
     @Override
     @Transactional
     public void delete(int departmentId) {
         if(DEPARTMENT_REPOSITORY.existsById(departmentId)) {
+            String departmentName = DEPARTMENT_REPOSITORY.findById(departmentId).get().getAbbreviation();
+            System.out.println(departmentName);
+            ENTITY_MANAGER.createQuery("UPDATE Employee SET department=null WHERE department=:departmentName")
+                    .setParameter("departmentName", departmentName)
+                    .executeUpdate();
             DEPARTMENT_REPOSITORY.deleteById(departmentId);
         }
     }
