@@ -43,7 +43,6 @@ public class DepartmentServiceImpl implements DepartmentService {
     public void delete(int departmentId) {
         if(DEPARTMENT_REPOSITORY.existsById(departmentId)) {
             String departmentName = DEPARTMENT_REPOSITORY.findById(departmentId).get().getAbbreviation();
-            System.out.println(departmentName);
             ENTITY_MANAGER.createQuery("UPDATE Employee SET department=null WHERE department=:departmentName")
                     .setParameter("departmentName", departmentName)
                     .executeUpdate();

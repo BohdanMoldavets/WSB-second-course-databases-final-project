@@ -38,11 +38,6 @@ public class SalaryServiceImpl implements SalaryService {
     }
 
     @Override
-    public Salary getByEmployeeId(int employeeId) {
-        return SALARY_REPOSITORY.findByEmployeeId(employeeId);
-    }
-
-    @Override
     @Transactional
     public void save(Salary salary) {
         SALARY_REPOSITORY.save(salary);

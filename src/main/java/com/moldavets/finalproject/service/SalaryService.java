@@ -8,7 +8,6 @@ public interface SalaryService {
 
     List<Salary> getAll();
     Salary getById(int id);
-    Salary getByEmployeeId(int employeeId);
 
     void save(Salary salary);
     void update(Salary salary);
