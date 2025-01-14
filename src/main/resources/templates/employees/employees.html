@@ -54,6 +54,17 @@
             Add Employee
         </a>
 
+
+        <div>
+
+            <form action="#" th:action="@{/employees/search}">
+
+                <input type="text" name="q" placeholder="Search"/>
+                <input type="submit" value="Submit">
+            </form>
+
+        </div>
+
         <div>
             <a th:href="@{/departments/}"
                class="btn btn-dark btn-sm mb-3" style="float: right">

@@ -54,12 +54,39 @@ public class EmployeeController {
     }
 
     @GetMapping("/updateForm")
-    public String getUpdateEmployeePage(@RequestParam("employeeId") int employeeId,
-                                        Model model) {
+    public String getUpdateEmployeePage(
+            @RequestParam("employeeId") int employeeId,
+            Model model) {
         Employee employee = EMPLOYEE_SERVICE.getById(employeeId);
         model.addAttribute("employee", employee);
         model.addAttribute("departments", DEPARTMENT_SERVICE.getAll());
         return "employees/employeesUpdateForm";
+    }
+
+    @GetMapping("/search")
+    public String searchEmployee(
+            @RequestParam("q") String query,
+            Model model) {
+
+        Employee searchEmployee;
+        String[] splitQuery = query.split(",");
+
+        switch (splitQuery.length) {
+            case 1:
+                System.out.println("One");
+                //todo code like - EMPLOYEE_SERVICE.findByOneParam(String fistParam)
+                break;
+
+            case 2:
+                System.out.println("Two");
+                //todo code like - EMPLOYEE_SERVICE.findByTwoParams(String fistParam,String secondParam)
+                break;
+
+            default:
+                return "redirect:/employees/?&searchError";
+        }
+
+        return "redirect:/";
     }
 
     @PostMapping("/update")
