@@ -23,6 +23,7 @@
     <input type="hidden" th:field="*{id}">
 
     <span th:if="${param.error}" style="color: red">Something went wrong.. Don't forget that all fields must be non-empty</span>
+    <br th:if="${param.error}">
 
     First Name
     <input type="text" th:field="*{firstName}" placeholder="First Name"  class="form-control mb-4 w-25" />

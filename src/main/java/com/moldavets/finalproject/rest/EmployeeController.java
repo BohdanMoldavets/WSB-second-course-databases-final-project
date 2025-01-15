@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -40,8 +41,27 @@ public class EmployeeController {
     }
 
     @GetMapping("/")
-    public String listEmployees(Model model) {
-        List<Employee> employees = EMPLOYEE_SERVICE.getAll();
+    public String listEmployees(
+            @RequestParam(value = "sort", required = false) String sort,
+            Model model ) {
+
+        List<Employee> employees;
+        if(sort != null) {
+            employees = switch (sort) {
+                case "IdOrderByAsc" -> EMPLOYEE_SERVICE.getAllOrderByIdAsc();
+                case "IdOrderByDesc" -> EMPLOYEE_SERVICE.getAllOrderByIdDesc();
+                case "firstNameOrderByAsc" -> EMPLOYEE_SERVICE.getAllByOrderByFirstNameAsc();
+                case "firstNameOrderByDesc" -> EMPLOYEE_SERVICE.getAllByOrderByFirstNameDesc();
+                case "lastNameOrderByAsc" -> EMPLOYEE_SERVICE.getAllByOrderByLastNameAsc();
+                case "lastNameOrderByDesc" -> EMPLOYEE_SERVICE.getAllByOrderByLastNameDesc();
+                case "birthdayOrderByAsc" -> EMPLOYEE_SERVICE.getAllByOrderByBirthdayAsc();
+                case "birthdayOrderByDesc" -> EMPLOYEE_SERVICE.getAllByOrderByBirthdayDesc();
+                default -> EMPLOYEE_SERVICE.getAll();
+            };
+        } else {
+            employees = EMPLOYEE_SERVICE.getAll();
+        }
+
         model.addAttribute("employees", employees);
         return "employees/employees";
     }

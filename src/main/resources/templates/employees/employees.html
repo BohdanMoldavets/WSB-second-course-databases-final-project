@@ -55,12 +55,33 @@
         </a>
 
 
+<!--        <div>-->
+
+<!--            <form action="#" th:action="@{/employees/search}">-->
+
+<!--                <input type="text" name="q" placeholder="Search"/>-->
+<!--                <input type="submit" value="Submit">-->
+<!--            </form>-->
+
+<!--        </div>-->
         <div>
 
-            <form action="#" th:action="@{/employees/search}">
 
-                <input type="text" name="q" placeholder="Search"/>
-                <input type="submit" value="Submit">
+            <form>
+                <label>
+                    <select name="sort">
+                        <option value="IdOrderByAsc">ID Sorted in ascending order</option>
+                        <option value="IdOrderByDesc">ID Sorted in descending order</option>
+                        <option value="firstNameOrderByAsc">First Name Sorted in ascending order</option>
+                        <option value="firstNameOrderByDesc">First Name Sorted in descending order</option>
+                        <option value="lastNameOrderByAsc">Last Name Sorted in ascending order</option>
+                        <option value="lastNameOrderByDesc">Last Name Sorted in descending order</option>
+                        <option value="birthdayOrderByAsc">Birthday Sorted in ascending order</option>
+                        <option value="birthdayOrderByDesc">Birthday Sorted in descending order</option>
+                    </select>
+                </label>
+
+                <input type="submit" value="Sort">
             </form>
 
         </div>
@@ -86,7 +107,7 @@
             <th>Last Name</th>
             <th>Department</th>
             <th>Birthday</th>
-                <th sec:authorize="hasRole('MANAGER')">Action</th>
+            <th sec:authorize="hasRole('MANAGER')">Action</th>
         </tr>
         </thead>
         <tbody>

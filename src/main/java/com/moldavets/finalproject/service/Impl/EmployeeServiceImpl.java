@@ -24,6 +24,46 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public List<Employee> getAllOrderByIdAsc() {
+        return EMPLOYEE_REPOSITORY.findAllByOrderByIdAsc();
+    }
+
+    @Override
+    public List<Employee> getAllOrderByIdDesc() {
+        return EMPLOYEE_REPOSITORY.findAllByOrderByIdDesc();
+    }
+
+    @Override
+    public List<Employee> getAllByOrderByFirstNameAsc() {
+        return EMPLOYEE_REPOSITORY.findAllByOrderByFirstNameAsc();
+    }
+
+    @Override
+    public List<Employee> getAllByOrderByFirstNameDesc() {
+        return EMPLOYEE_REPOSITORY.findAllByOrderByFirstNameDesc();
+    }
+
+    @Override
+    public List<Employee> getAllByOrderByLastNameAsc() {
+        return EMPLOYEE_REPOSITORY.findAllByOrderByLastNameAsc();
+    }
+
+    @Override
+    public List<Employee> getAllByOrderByLastNameDesc() {
+        return EMPLOYEE_REPOSITORY.findAllByOrderByLastNameDesc();
+    }
+
+    @Override
+    public List<Employee> getAllByOrderByBirthdayAsc() {
+        return EMPLOYEE_REPOSITORY.findAllByOrderByBirthdayAsc();
+    }
+
+    @Override
+    public List<Employee> getAllByOrderByBirthdayDesc() {
+        return EMPLOYEE_REPOSITORY.findAllByOrderByBirthdayDesc();
+    }
+
+    @Override
     public Employee getById(int id) {
         return EMPLOYEE_REPOSITORY.findById(id).orElse(null);
     }
