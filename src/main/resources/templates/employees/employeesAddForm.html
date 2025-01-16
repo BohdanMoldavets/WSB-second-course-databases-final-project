@@ -25,15 +25,16 @@
     <form action="#" th:action="@{/employees/save}"
                      th:object="${employee}" method="POST">
 
-      <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error"></span>
+      <span th:if="${param.error}" style="color: red">Something went wrong.. Don't forget that all fields must be non-empty</span>
+
+      First Name
       <input type="text" th:field="*{firstName}" placeholder="First Name"  class="form-control mb-4 w-25" />
 
-      <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error"></span>
+      Last Name
       <input type="text" th:field="*{lastName}" placeholder="Last Name" class="form-control mb-4 w-25"/>
 
-
-<!--      <span th:if="${#fields.hasErrors('department')}" th:errors="*{department}" class="error"></span>-->
-<!--      <input type="text" th:field="*{department}" placeholder="Department" class="form-control mb-4 w-25"/>-->
+      Department
+      <br>
 
       <select class="btn btn-primary dropdown-toggle"
               th:field="*{department}" style="margin-bottom: 18px">
@@ -42,9 +43,24 @@
                 th:text="${tempDepartment.name}"/>
       </select>
 
-
-      <span th:if="${#fields.hasErrors('birthday')}" class="error" th:errors="*{birthday}"></span>
+      <br>
+      Birthday
       <input type="date" th:field="*{birthday}" placeholder="Birthday" class="form-control mb-4 w-25"/>
+
+      <div>
+        <div >
+          Amount
+          <input type="text" th:field="*{salary.amount}" placeholder="Amount"  class="form-control mb-4 w-25" />
+        </div>
+        <div style="margin-bottom: 15px">
+          Currency
+          <select th:field="*{salary.currency}">
+            <option value="USD">USD</option>
+            <option value="EUR">EUR</option>
+            <option value="PLN">PLN</option>
+          </select>
+        </div>
+      </div>
 
       <input type="submit" value="Save" class="btn btn-info col-2">
     </form>

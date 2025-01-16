@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+                xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <title>Accounting Employees</title>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="navbar align-items-center justify-content-between">
+        <div>
+            <h3>Accounting Employees</h3>
+        </div>
+        <div sec:authorize="!hasRole('MANAGER')">
+            <form action="#" th:action="@{/login}" method="GET">
+                <input type="submit" value="Login"/>
+            </form>
+        </div>
+
+        <div class="navbar align-items-center justify-content-between"
+             sec:authorize="hasRole('MANAGER')"
+             style="padding: 0px">
+            <div style="margin-right: 20px">
+                <span><b>Username:</b></span>
+                <span sec:authentication="principal.username"></span>
+                <br>
+                <span><b>Role:</b></span>
+                <span sec:authentication="principal.authorities"></span>
+            </div>
+            <div>
+                <form action="#" th:action="@{/logout}" method="POST">
+                    <input type="submit" value="Logout"/>
+                </form>
+            </div>
+        </div>
+    </div>
+    <hr>
+
+    <div class="navbar align-items-center justify-content-between"
+         sec:authorize="hasRole('MANAGER')"
+         style="padding: 0px">
+
+        <a th:href="@{/employees/add}"
+           class="btn btn-primary btn-sm mb-3">
+            Add Employee
+        </a>
+
+
+<!--        <div>-->
+
+<!--            <form action="#" th:action="@{/employees/search}">-->
+
+<!--                <input type="text" name="q" placeholder="Search"/>-->
+<!--                <input type="submit" value="Submit">-->
+<!--            </form>-->
+
+<!--        </div>-->
+        <div>
+
+
+            <form>
+                <label>
+                    <select name="sort">
+                        <option value="IdOrderByAsc">ID Sorted in ascending order</option>
+                        <option value="IdOrderByDesc">ID Sorted in descending order</option>
+                        <option value="firstNameOrderByAsc">First Name Sorted in ascending order</option>
+                        <option value="firstNameOrderByDesc">First Name Sorted in descending order</option>
+                        <option value="lastNameOrderByAsc">Last Name Sorted in ascending order</option>
+                        <option value="lastNameOrderByDesc">Last Name Sorted in descending order</option>
+                        <option value="birthdayOrderByAsc">Birthday Sorted in ascending order</option>
+                        <option value="birthdayOrderByDesc">Birthday Sorted in descending order</option>
+                    </select>
+                </label>
+
+                <input type="submit" value="Sort">
+            </form>
+
+        </div>
+
+        <div>
+            <a th:href="@{/departments/}"
+               class="btn btn-dark btn-sm mb-3" style="float: right">
+                Departments
+            </a>
+
+            <a th:href="@{/salaries/}"
+               class="btn btn-dark btn-sm mb-3" style="float: right; margin-right: 5px">
+                Salaries
+            </a>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>Id</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Department</th>
+            <th>Birthday</th>
+            <th sec:authorize="hasRole('MANAGER')">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr th:each="employee : ${employees}">
+
+            <td th:text="${employee.id}" />
+            <td th:text="${employee.firstName}" />
+            <td th:text="${employee.lastName}" />
+            <td th:text="${employee.department}" />
+            <td th:text="${employee.birthday}" />
+
+            <td sec:authorize="hasRole('MANAGER')">
+                <div class="row">
+
+                    <div class="col-small">
+                        <form action="#" sec:authorize="hasRole('MANAGER')" th:action="@{/employees/updateForm}">
+
+                            <input type="hidden" name="employeeId" th:value="${employee.id}" />
+                            <button type="submit" class="btn btn-info btn-sm me-1" style="float:left;">Update</button>
+
+                        </form>
+
+                        <form action="#" sec:authorize="hasRole('ADMIN')" th:action="@{/employees/delete}" method="POST">
+
+                            <input type="hidden" name="employeeId" th:value="${employee.id}" />
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                    onclick="if (!(confirm('Are you sure you want to delete this employee?'))) return false">
+                                Delete
+                            </button>
+
+                        </form>
+                    </div>
+                </div>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+
+</body>
+</html>
