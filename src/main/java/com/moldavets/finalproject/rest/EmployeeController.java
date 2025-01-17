@@ -54,6 +54,8 @@ public class EmployeeController {
                 case "firstNameOrderByDesc" -> EMPLOYEE_SERVICE.getAllByOrderByFirstNameDesc();
                 case "lastNameOrderByAsc" -> EMPLOYEE_SERVICE.getAllByOrderByLastNameAsc();
                 case "lastNameOrderByDesc" -> EMPLOYEE_SERVICE.getAllByOrderByLastNameDesc();
+                case "departmentOrderByAsc" -> EMPLOYEE_SERVICE.getAllByOrderByDepartmentAsc();
+                case "departmentOrderByDesc" -> EMPLOYEE_SERVICE.getAllByOrderByDepartmentDesc();
                 case "birthdayOrderByAsc" -> EMPLOYEE_SERVICE.getAllByOrderByBirthdayAsc();
                 case "birthdayOrderByDesc" -> EMPLOYEE_SERVICE.getAllByOrderByBirthdayDesc();
                 default -> EMPLOYEE_SERVICE.getAll();

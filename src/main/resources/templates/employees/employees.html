@@ -47,7 +47,7 @@
 
     <div class="navbar align-items-center justify-content-between"
          sec:authorize="hasRole('MANAGER')"
-         style="padding: 0px">
+         style="padding: 0">
 
         <a th:href="@{/employees/add}"
            class="btn btn-primary btn-sm mb-3">
@@ -76,6 +76,8 @@
                         <option value="firstNameOrderByDesc">First Name Sorted in descending order</option>
                         <option value="lastNameOrderByAsc">Last Name Sorted in ascending order</option>
                         <option value="lastNameOrderByDesc">Last Name Sorted in descending order</option>
+                        <option value="departmentOrderByAsc">Department Sorted in ascending order</option>
+                        <option value="departmentOrderByDesc">Department Sorted in descending order</option>
                         <option value="birthdayOrderByAsc">Birthday Sorted in ascending order</option>
                         <option value="birthdayOrderByDesc">Birthday Sorted in descending order</option>
                     </select>

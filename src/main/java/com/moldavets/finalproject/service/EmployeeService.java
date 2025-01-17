@@ -14,6 +14,8 @@ public interface EmployeeService {
     List<Employee> getAllByOrderByFirstNameDesc();
     List<Employee> getAllByOrderByLastNameAsc();
     List<Employee> getAllByOrderByLastNameDesc();
+    List<Employee> getAllByOrderByDepartmentAsc();
+    List<Employee> getAllByOrderByDepartmentDesc();
     List<Employee> getAllByOrderByBirthdayAsc();
     List<Employee> getAllByOrderByBirthdayDesc();
     Employee getById(int id);
