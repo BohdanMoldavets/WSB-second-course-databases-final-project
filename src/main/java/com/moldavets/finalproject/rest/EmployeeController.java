@@ -1,7 +1,9 @@
 package com.moldavets.finalproject.rest;
 
+import com.moldavets.finalproject.entity.DateStamp;
 import com.moldavets.finalproject.entity.Employee;
 import com.moldavets.finalproject.entity.Salary;
+import com.moldavets.finalproject.service.DateStampService;
 import com.moldavets.finalproject.service.DepartmentService;
 import com.moldavets.finalproject.service.EmployeeService;
 import com.moldavets.finalproject.service.SalaryService;
@@ -14,8 +16,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/employees")
@@ -24,14 +29,17 @@ public class EmployeeController {
     private final EmployeeService EMPLOYEE_SERVICE;
     private final DepartmentService DEPARTMENT_SERVICE;
     private final SalaryService SALARY_SERVICE;
+    private final DateStampService DATE_STAMP_SERVICE;
 
     @Autowired
     public EmployeeController(EmployeeService employeeService,
                               DepartmentService departmentService,
-                              SalaryService salaryService) {
+                              SalaryService salaryService,
+                              DateStampService dateStampService) {
         this.EMPLOYEE_SERVICE = employeeService;
         this.DEPARTMENT_SERVICE = departmentService;
         this.SALARY_SERVICE = salaryService;
+        this.DATE_STAMP_SERVICE = dateStampService;
     }
 
     @InitBinder
@@ -134,6 +142,16 @@ public class EmployeeController {
         Salary tempSalary = employee.getSalary();
         tempSalary.setEmployee(employee);
         SALARY_SERVICE.save(tempSalary);
+
+        DateStamp tempDateStamp = new DateStamp(
+                employee,
+                LocalDate.now().toString(),
+                LocalDate.now().toString()
+        );
+        DATE_STAMP_SERVICE.save(tempDateStamp);
+
+        employee.setDate(tempDateStamp);
+
         EMPLOYEE_SERVICE.save(employee);
         return "redirect:/";
     }
