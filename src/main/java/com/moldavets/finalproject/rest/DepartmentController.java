@@ -36,8 +36,8 @@ public class DepartmentController {
         List<Department> departments;
         if(sort != null) {
             departments = switch (sort) {
-                case "IdOrderByAsc" -> DEPARTMENT_SERVICE.getAllOrderByIdAsc();
-                case "IdOrderByDesc" -> DEPARTMENT_SERVICE.getAllOrderByIdDesc();
+                case "idOrderByAsc" -> DEPARTMENT_SERVICE.getAllOrderByIdAsc();
+                case "idOrderByDesc" -> DEPARTMENT_SERVICE.getAllOrderByIdDesc();
                 case "abbreviationOrderByAsc" -> DEPARTMENT_SERVICE.getAllOrderByAbbreviationAsc();
                 case "abbreviationOrderByDesc" -> DEPARTMENT_SERVICE.getAllOrderByAbbreviationDesc();
                 case "nameOrderByAsc" -> DEPARTMENT_SERVICE.getAllOrderByNameAsc();

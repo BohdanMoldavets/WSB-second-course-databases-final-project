@@ -39,8 +39,8 @@ public class DateStampController {
 
         if(sort != null) {
             dateStamps = switch (sort) {
-                case "IdOrderByASC" -> DATE_STAMP_SERVICE.getAllOrderByIdAsc();
-                case "IdOrderByDesc" -> DATE_STAMP_SERVICE.getAllOrderByIdDesc();
+                case "idOrderByASC" -> DATE_STAMP_SERVICE.getAllOrderByIdAsc();
+                case "idOrderByDesc" -> DATE_STAMP_SERVICE.getAllOrderByIdDesc();
                 case "employeeIdOrderByAsc" -> DATE_STAMP_SERVICE.getAllOrderByEmployeeIdAsc();
                 case "employeeIdOrderByDesc" -> DATE_STAMP_SERVICE.getAllOrderByEmployeeIdDesc();
                 case "employeeNameOrderByAsc" -> DATE_STAMP_SERVICE.getAllOrderByEmployeeFirstNameAsc();
