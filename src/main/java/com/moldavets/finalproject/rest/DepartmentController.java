@@ -31,8 +31,23 @@ public class DepartmentController {
     }
 
     @GetMapping("/")
-    public String listDepartments(Model model) {
-        List<Department> departments = DEPARTMENT_SERVICE.getAll();
+    public String listDepartments(@RequestParam(value = "sort", required = false) String sort,
+                                  Model model) {
+        List<Department> departments;
+        if(sort != null) {
+            departments = switch (sort) {
+                case "IdOrderByAsc" -> DEPARTMENT_SERVICE.getAllOrderByIdAsc();
+                case "IdOrderByDesc" -> DEPARTMENT_SERVICE.getAllOrderByIdDesc();
+                case "abbreviationOrderByAsc" -> DEPARTMENT_SERVICE.getAllOrderByAbbreviationAsc();
+                case "abbreviationOrderByDesc" -> DEPARTMENT_SERVICE.getAllOrderByAbbreviationDesc();
+                case "nameOrderByAsc" -> DEPARTMENT_SERVICE.getAllOrderByNameAsc();
+                case "nameOrderByDesc" -> DEPARTMENT_SERVICE.getAllOrderByNameDesc();
+                default -> DEPARTMENT_SERVICE.getAll();
+            };
+        } else {
+            departments = DEPARTMENT_SERVICE.getAll();
+        }
+
         model.addAttribute("departments", departments);
         return "departments/departments";
     }
