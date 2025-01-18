@@ -34,8 +34,29 @@ public class SalaryController {
     }
 
     @GetMapping("/")
-    public String listSalaries(Model model) {
-        List<Salary> salaries = SALARY_SERVICE.getAll();
+    public String listSalaries(@RequestParam(value = "sort", required = false) String sort,
+                               Model model) {
+
+        List<Salary> salaries;
+
+        if(sort != null) {
+            salaries = switch (sort) {
+                case "idOrderByASC" -> SALARY_SERVICE.getAllOrderByIdAsc();
+                case "idOrderByDesc" -> SALARY_SERVICE.getAllOrderByIdDesc();
+                case "employeeIdOrderByAsc" -> SALARY_SERVICE.getAllOrderByEmployeeIdAsc();
+                case "employeeIdOrderByDesc" -> SALARY_SERVICE.getAllOrderByEmployeeIdDesc();
+                case "employeeNameOrderByAsc" -> SALARY_SERVICE.getAllOrderByEmployeeFirstNameAsc();
+                case "employeeNameOrderByDesc" -> SALARY_SERVICE.getAllOrderByEmployeeFirstNameDesc();
+                case "amountOrderByAsc" -> SALARY_SERVICE.getAllOrderByAmountAsc();
+                case "amountOrderByDesc" -> SALARY_SERVICE.getAllOrderByAmountDesc();
+                case "currencyOrderByAsc" -> SALARY_SERVICE.getAllOrderByCurrencyAsc();
+                case "currencyOrderByDesc" -> SALARY_SERVICE.getAllOrderByCurrencyDesc();
+                default -> SALARY_SERVICE.getAll();
+            };
+        } else {
+            salaries = SALARY_SERVICE.getAll();
+        }
+
         model.addAttribute("salaries", salaries);
         return "salaries/salaries";
     }
