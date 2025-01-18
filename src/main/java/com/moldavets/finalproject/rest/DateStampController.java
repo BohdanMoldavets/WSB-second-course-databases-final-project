@@ -32,8 +32,29 @@ public class DateStampController {
     }
 
     @GetMapping("/")
-    public String getDateStamps(Model model) {
-        List<DateStamp> dateStamps = DATE_STAMP_SERVICE.getAll();
+    public String getDateStamps(@RequestParam(value = "sort", required = false) String sort,
+                                Model model) {
+
+        List<DateStamp> dateStamps;
+
+        if(sort != null) {
+            dateStamps = switch (sort) {
+                case "IdOrderByASC" -> DATE_STAMP_SERVICE.getAllOrderByIdAsc();
+                case "IdOrderByDesc" -> DATE_STAMP_SERVICE.getAllOrderByIdDesc();
+                case "employeeIdOrderByAsc" -> DATE_STAMP_SERVICE.getAllOrderByEmployeeIdAsc();
+                case "employeeIdOrderByDesc" -> DATE_STAMP_SERVICE.getAllOrderByEmployeeIdDesc();
+                case "employeeNameOrderByAsc" -> DATE_STAMP_SERVICE.getAllOrderByEmployeeFirstNameAsc();
+                case "employeeNameOrderByDesc" -> DATE_STAMP_SERVICE.getAllOrderByEmployeeFirstNameDesc();
+                case "employmentDateOrderByAsc" -> DATE_STAMP_SERVICE.getAllOrderByEmploymentDateAsc();
+                case "employmentDateOrderByDesc" -> DATE_STAMP_SERVICE.getAllOrderByEmploymentDateDesc();
+                case "paymentDateOrderByAsc" -> DATE_STAMP_SERVICE.getAllOrderByPaymentDateAsc();
+                case "paymentDateOrderByDesc" -> DATE_STAMP_SERVICE.getAllOrderByPaymentDateDesc();
+                default -> DATE_STAMP_SERVICE.getAll();
+            };
+        } else {
+            dateStamps = DATE_STAMP_SERVICE.getAll();
+        }
+
         model.addAttribute("dateStamps", dateStamps);
         return "datestamps/datestamps";
     }

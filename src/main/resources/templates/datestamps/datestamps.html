@@ -45,21 +45,47 @@
     </div>
     <hr>
 
-    <div>
-        <a sec:authorize="hasRole('MANAGER')" th:href="@{/employees/}"
-           class="btn btn-dark btn-sm mb-3" style="float: right">
-            Employees
-        </a>
+    <div class="navbar align-items-center justify-content-between"
+         sec:authorize="hasRole('MANAGER')"
+         style="padding: 0">
 
-        <a sec:authorize="hasRole('MANAGER')" th:href="@{/salaries/}"
-           class="btn btn-dark btn-sm mb-3" style="float: right; margin-right: 5px">
-            Salaries
-        </a>
+        <div>
+            <form>
+                <label>
+                    <select name="sort">
+                        <option value="idOrderByAsc">ID Sorted in ascending order</option>
+                        <option value="idOrderByDesc">ID Sorted in descending order</option>
+                        <option value="employeeIdOrderByAsc">Employee ID Sorted in ascending order</option>
+                        <option value="employeeIdOrderByDesc">Employee ID Sorted in descending order</option>
+                        <option value="employeeNameOrderByAsc">Employee Name Sorted in ascending order</option>
+                        <option value="employeeNameOrderByDesc">Employee Name Sorted in descending order</option>
+                        <option value="employmentDateOrderByAsc">Employment Date Sorted in ascending order</option>
+                        <option value="employmentDateOrderByDesc">Employment Date Sorted in descending order</option>
+                        <option value="paymentDateOrderByAsc">Payment Date Sorted in ascending order</option>
+                        <option value="paymentDateOrderByDesc">Payment Date in descending order</option>
+                    </select>
+                </label>
+                <input type="submit" value="Sort">
+            </form>
+        </div>
 
-        <a sec:authorize="hasRole('MANAGER')" th:href="@{/departments/}"
-           class="btn btn-dark btn-sm mb-3" style="float: right; margin-right: 5px">
-            Departments
-        </a>
+        <div>
+            <a sec:authorize="hasRole('MANAGER')" th:href="@{/employees/}"
+               class="btn btn-dark btn-sm mb-3" style="float: right">
+                Employees
+            </a>
+
+            <a sec:authorize="hasRole('MANAGER')" th:href="@{/salaries/}"
+               class="btn btn-dark btn-sm mb-3" style="float: right; margin-right: 5px">
+                Salaries
+            </a>
+
+            <a sec:authorize="hasRole('MANAGER')" th:href="@{/departments/}"
+               class="btn btn-dark btn-sm mb-3" style="float: right; margin-right: 5px">
+                Departments
+            </a>
+        </div>
+
     </div>
 
     <table class="table table-bordered table-striped">
