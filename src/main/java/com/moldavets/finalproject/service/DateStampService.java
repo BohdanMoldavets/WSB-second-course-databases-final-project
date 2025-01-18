@@ -10,5 +10,6 @@ public interface DateStampService {
     DateStamp getById(int id);
 
     void save(DateStamp dateStamp);
+    void update(DateStamp dateStamp);
 
 }

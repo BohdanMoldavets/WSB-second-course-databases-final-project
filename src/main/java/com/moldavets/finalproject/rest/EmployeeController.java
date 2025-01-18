@@ -146,7 +146,7 @@ public class EmployeeController {
         DateStamp tempDateStamp = new DateStamp(
                 employee,
                 LocalDate.now().toString(),
-                LocalDate.now().toString()
+                LocalDate.now().plusMonths(1).toString()
         );
         DATE_STAMP_SERVICE.save(tempDateStamp);
 

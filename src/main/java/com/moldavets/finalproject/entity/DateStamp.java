@@ -21,10 +21,10 @@ public class DateStamp {
     @JoinColumn(name="employee_id")
     private Employee employee;
 
-    @Column(name="employment_day")
+    @Column(name="employment_day", length = 16)
     private String employmentDate;
 
-    @Column(name="payment_date")
+    @Column(name="payment_date", length = 16)
     private String paymentDate;
 
     public DateStamp() {

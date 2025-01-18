@@ -26,6 +26,7 @@
           th:object="${departments}" method="POST">
 
         <span th:if="${#fields.hasErrors('abbreviation')}" th:errors="*{abbreviation}" class="error"></span>
+        <br th:if="${#fields.hasErrors('abbreviation')}">
         Abbreviation
         <input type="text" th:field="*{abbreviation}" placeholder="Abbreviation" class="form-control mb-4 w-25" />
 
