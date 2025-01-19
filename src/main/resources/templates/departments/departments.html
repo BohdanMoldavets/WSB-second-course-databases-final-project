@@ -45,21 +45,49 @@
     </div>
     <hr>
 
-    <div>
-        <a sec:authorize="hasRole('MANAGER')" th:href="@{/departments/add}"
+    <div class="navbar align-items-center justify-content-between"
+         sec:authorize="hasRole('MANAGER')"
+         style="padding: 0">
+
+        <a th:href="@{/departments/add}"
            class="btn btn-primary btn-sm mb-3">
             Add Department
         </a>
 
-        <a sec:authorize="hasRole('MANAGER')" th:href="@{/employees/}"
-           class="btn btn-dark btn-sm mb-3" style="float: right">
-            Employees
-        </a>
+        <div>
 
-        <a sec:authorize="hasRole('MANAGER')" th:href="@{/salaries/}"
-           class="btn btn-dark btn-sm mb-3" style="float: right; margin-right: 5px">
-            Salaries
-        </a>
+            <form>
+                <label>
+                    <select name="sort">
+                        <option value="idOrderByAsc">ID Sorted in ascending order</option>
+                        <option value="idOrderByDesc">ID Sorted in descending order</option>
+                        <option value="abbreviationOrderByAsc">Abbreviation Sorted in ascending order</option>
+                        <option value="abbreviationOrderByDesc">Abbreviation Sorted in descending order</option>
+                        <option value="nameOrderByAsc">Department Name Sorted in ascending order</option>
+                        <option value="nameOrderByDesc">Department Name Sorted in descending order</option>
+                    </select>
+                </label>
+                <input type="submit" value="Sort">
+            </form>
+
+        </div>
+
+        <div>
+            <a th:href="@{/employees/}"
+               class="btn btn-dark btn-sm mb-3" style="float: right">
+                Employees
+            </a>
+
+            <a th:href="@{/salaries/}"
+               class="btn btn-dark btn-sm mb-3" style="float: right; margin-right: 5px">
+                Salaries
+            </a>
+
+            <a th:href="@{/datestamps/}"
+               class="btn btn-dark btn-sm mb-3" style="float: right; margin-right: 5px">
+                Date Stamps
+            </a>
+        </div>
     </div>
 
     <table class="table table-bordered table-striped">

@@ -8,6 +8,16 @@ public interface SalaryService {
 
     List<Salary> getAll();
     Salary getById(int id);
+    List<Salary> getAllOrderByIdAsc();
+    List<Salary> getAllOrderByIdDesc();
+    List<Salary> getAllOrderByEmployeeIdAsc();
+    List<Salary> getAllOrderByEmployeeIdDesc();
+    List<Salary> getAllOrderByEmployeeFirstNameAsc();
+    List<Salary> getAllOrderByEmployeeFirstNameDesc();
+    List<Salary> getAllOrderByAmountAsc();
+    List<Salary> getAllOrderByAmountDesc();
+    List<Salary> getAllOrderByCurrencyAsc();
+    List<Salary> getAllOrderByCurrencyDesc();
 
     void save(Salary salary);
     void update(Salary salary);

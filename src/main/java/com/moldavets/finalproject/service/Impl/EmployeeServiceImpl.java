@@ -54,6 +54,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public List<Employee> getAllByOrderByDepartmentAsc() {
+        return EMPLOYEE_REPOSITORY.findAllByOrderByDepartmentAsc();
+    }
+
+    @Override
+    public List<Employee> getAllByOrderByDepartmentDesc() {
+        return EMPLOYEE_REPOSITORY.findAllByOrderByDepartmentDesc();
+    }
+
+    @Override
     public List<Employee> getAllByOrderByBirthdayAsc() {
         return EMPLOYEE_REPOSITORY.findAllByOrderByBirthdayAsc();
     }

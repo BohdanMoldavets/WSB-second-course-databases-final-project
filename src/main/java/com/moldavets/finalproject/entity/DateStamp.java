@@ -1,7 +1,11 @@
 package com.moldavets.finalproject.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import lombok.Builder;
 import lombok.Data;
+
+import java.util.Date;
 
 @Data
 @Entity
@@ -17,18 +21,50 @@ public class DateStamp {
     @JoinColumn(name="employee_id")
     private Employee employee;
 
-    @Column(name="employment_day")
-    private java.util.Date employmentDate;
+    @Column(name="employment_day", length = 16)
+    private String employmentDate;
 
-    @Column(name="payment_date")
-    private java.util.Date paymentDate;
+    @Column(name="payment_date", length = 16)
+    private String paymentDate;
 
     public DateStamp() {
     }
 
-    public DateStamp(Employee employee, java.util.Date employmentDate, java.util.Date paymentDate) {
+    public DateStamp(Employee employee, String employmentDate, String paymentDate) {
         this.employee = employee;
         this.employmentDate = employmentDate;
+        this.paymentDate = paymentDate;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public String getEmploymentDate() {
+        return employmentDate;
+    }
+
+    public void setEmploymentDate(String employmentDate) {
+        this.employmentDate = employmentDate;
+    }
+
+    public String getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(String paymentDate) {
         this.paymentDate = paymentDate;
     }
 }

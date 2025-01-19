@@ -33,6 +33,36 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
+    public List<Department> getAllOrderByIdAsc() {
+        return DEPARTMENT_REPOSITORY.findAllByOrderByIdAsc();
+    }
+
+    @Override
+    public List<Department> getAllOrderByIdDesc() {
+        return DEPARTMENT_REPOSITORY.findAllByOrderByIdDesc();
+    }
+
+    @Override
+    public List<Department> getAllOrderByAbbreviationAsc() {
+        return DEPARTMENT_REPOSITORY.findAllByOrderByAbbreviationAsc();
+    }
+
+    @Override
+    public List<Department> getAllOrderByAbbreviationDesc() {
+        return DEPARTMENT_REPOSITORY.findAllByOrderByAbbreviationDesc();
+    }
+
+    @Override
+    public List<Department> getAllOrderByNameAsc() {
+        return DEPARTMENT_REPOSITORY.findAllByOrderByNameAsc();
+    }
+
+    @Override
+    public List<Department> getAllOrderByNameDesc() {
+        return DEPARTMENT_REPOSITORY.findAllByOrderByNameDesc();
+    }
+
+    @Override
     @Transactional
     public void save(Department department) {
         DEPARTMENT_REPOSITORY.save(department);
