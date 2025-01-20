@@ -45,10 +45,15 @@
     </div>
     <hr>
 
-    <div class="navbar align-items-center justify-content-between">
+    <div sec:authorize="hasRole('MANAGER')"
+         class="navbar align-items-center justify-content-between"
+         style="margin-bottom: 20px">
         <div>
             <div th:if="${param.searchError}">
                 <span style="color: red">This field is required for search</span>
+            </div>
+            <div th:if="!${param.searchError}" style="margin: 0">
+                <span>Search</span>
             </div>
             <form th:action="@{/employees/search}">
                 <input type="text" placeholder="Text for search" name="query"/>
@@ -65,10 +70,12 @@
          sec:authorize="hasRole('MANAGER')"
          style="padding: 0">
 
-        <a th:href="@{/employees/add}"
-           class="btn btn-primary btn-sm mb-3">
-            Add Employee
-        </a>
+        <div>
+            <a th:href="@{/employees/add}"
+               class="btn btn-success btn-sm mb-3">
+                Add Employee
+            </a>
+        </div>
 
 
 <!--        <div>-->
@@ -80,7 +87,7 @@
 <!--            </form>-->
 
 <!--        </div>-->
-        <div>
+        <div th:if="!${param.query}">
 
             <form>
                 <label>
@@ -135,7 +142,6 @@
         <tbody>
 
         <tr th:each="employee : ${employees}">
-
             <td th:text="${employee.id}" />
             <td th:text="${employee.firstName}" />
             <td th:text="${employee.lastName}" />
@@ -165,11 +171,9 @@
                     </div>
                 </div>
             </td>
-
         </tr>
         </tbody>
     </table>
-
 </div>
 
 </body>
