@@ -18,7 +18,7 @@
 
     <div class="navbar align-items-center justify-content-between">
         <div>
-            <h3>Accounting Employees</h3>
+            <h3><a th:href="@{/}" style="text-decoration: none">Accounting Employees</a></h3>
         </div>
         <div sec:authorize="!hasRole('MANAGER')">
             <form action="#" th:action="@{/login}" method="GET">
@@ -44,6 +44,22 @@
         </div>
     </div>
     <hr>
+
+    <div class="navbar align-items-center justify-content-between">
+        <div>
+            <div th:if="${param.searchError}">
+                <span style="color: red">This field is required for search</span>
+            </div>
+            <form th:action="@{/employees/search}">
+                <input type="text" placeholder="Text for search" name="query"/>
+                <input type="submit" value="Search">
+            </form>
+        </div>
+
+        <div>
+
+        </div>
+    </div>
 
     <div class="navbar align-items-center justify-content-between"
          sec:authorize="hasRole('MANAGER')"

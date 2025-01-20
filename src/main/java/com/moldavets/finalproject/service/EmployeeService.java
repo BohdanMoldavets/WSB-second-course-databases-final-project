@@ -18,6 +18,9 @@ public interface EmployeeService {
     List<Employee> getAllByOrderByDepartmentDesc();
     List<Employee> getAllByOrderByBirthdayAsc();
     List<Employee> getAllByOrderByBirthdayDesc();
+
+    List<Employee> getAllByInputString(String query);
+
     Employee getById(int id);
     void save(Employee employee);
     void deleteById(int id);

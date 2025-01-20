@@ -95,28 +95,15 @@ public class EmployeeController {
 
     @GetMapping("/search")
     public String searchEmployee(
-            @RequestParam("q") String query,
+            @RequestParam(value = "query", required = false) String query,
             Model model) {
 
-        Employee searchEmployee;
-        String[] splitQuery = query.split(",");
-
-        switch (splitQuery.length) {
-            case 1:
-                System.out.println("One");
-                //todo code like - EMPLOYEE_SERVICE.findByOneParam(String fistParam)
-                break;
-
-            case 2:
-                System.out.println("Two");
-                //todo code like - EMPLOYEE_SERVICE.findByTwoParams(String fistParam,String secondParam)
-                break;
-
-            default:
-                return "redirect:/employees/?&searchError";
+        if(query != null) {
+            model.addAttribute("employees", EMPLOYEE_SERVICE.getAllByInputString(query));
+            return "employees/employees";
+        } else {
+            return "redirect:/employees/?searchError";
         }
-
-        return "redirect:/";
     }
 
     @PostMapping("/update")
