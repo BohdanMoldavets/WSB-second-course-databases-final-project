@@ -52,7 +52,7 @@
             <div th:if="${param.searchError}">
                 <span style="color: red">This field is required for search</span>
             </div>
-            <div th:if="!${param.searchError}" style="margin: 0">
+            <div th:if="!${param.searchError}" style="font-weight: 600;margin: 0">
                 <span>Search</span>
             </div>
             <form th:action="@{/employees/search}">
@@ -61,8 +61,15 @@
             </form>
         </div>
 
-        <div>
-
+        <div th:if="!${param.query}" style="float: right">
+            <div style="font-weight: 600;margin: 0">
+                <span>Filter</span>
+            </div>
+            <form th:action="@{/employees/filter}">
+                <input name="department" placeholder="Department"/>
+                <input name="birthday" placeholder="Birthday"/>
+                <input type="submit" value="Filter"/>
+            </form>
         </div>
     </div>
 

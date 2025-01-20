@@ -20,6 +20,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Controller
@@ -51,7 +53,7 @@ public class EmployeeController {
     @GetMapping("/")
     public String listEmployees(
             @RequestParam(value = "sort", required = false) String sort,
-            Model model ) {
+            Model model) {
 
         List<Employee> employees;
         if(sort != null) {
@@ -104,6 +106,33 @@ public class EmployeeController {
         } else {
             return "redirect:/employees/?searchError";
         }
+    }
+
+    @GetMapping("/filter")
+    public String filterEmployee(@RequestParam(value = "department", required = false) String department,
+                                 @RequestParam(value = "birthday", required = false) String birthday,
+                                 Model model) {
+
+        List<Employee> employees = EMPLOYEE_SERVICE.getAll();
+
+        if(department != null && birthday != null) {
+            employees = employees.stream()
+                    .filter(e-> e.getDepartment().startsWith(department) && e.getBirthday().startsWith(birthday))
+                    .collect(Collectors.toList());
+        } else if (department != null) {
+            employees = employees.stream()
+                    .filter(e-> e.getDepartment().startsWith(department))
+                    .collect(Collectors.toList());
+        } else if (birthday != null) {
+            employees = employees.stream()
+                    .filter(e-> e.getBirthday().startsWith(birthday))
+                    .collect(Collectors.toList());
+        } else {
+            return "redirect:/employees/?filterError";
+        }
+
+        model.addAttribute("employees", employees);
+        return "employees/employees";
     }
 
     @PostMapping("/update")
