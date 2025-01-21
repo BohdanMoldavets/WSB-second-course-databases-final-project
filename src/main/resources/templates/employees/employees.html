@@ -66,8 +66,20 @@
                 <span>Filter</span>
             </div>
             <form th:action="@{/employees/filter}">
-                <input name="department" placeholder="Department" th:value="${param.department}"/>
-                <input name="birthday" placeholder="Birthday" th:value="${param.birthday}"/>
+
+                <input type="text" name="department"
+                       placeholder="Department"
+                       th:value="${param.department}"
+                       maxlength="3"
+                       oninput="this.value = this.value.slice(0, 3)"
+                       title="Please enter only 3 characters"/>
+
+                <input type="text" name="birthday"
+                       placeholder="Birthday"
+                       th:value="${param.birthday}"
+                       oninput="this.value = this.value.replace(/[^0-9]/g, '');"
+                       title="Please enter only numbers"/>
+
                 <input type="submit" value="Filter"/>
             </form>
         </div>

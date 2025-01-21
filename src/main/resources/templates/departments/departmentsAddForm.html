@@ -31,6 +31,8 @@
         <input type="text" th:field="*{abbreviation}" placeholder="Abbreviation" class="form-control mb-4 w-25" />
 
         <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></span>
+        <br th:if="${#fields.hasErrors('name')}">
+
         Department's name
         <input type="text" th:field="*{name}" placeholder="Department's name" class="form-control mb-4 w-25"/>
 
