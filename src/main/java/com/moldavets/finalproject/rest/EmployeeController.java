@@ -55,7 +55,7 @@ public class EmployeeController {
             Model model) {
 
         /*In this function, I am required to use sql queries
-        instead of Stream API as this is a database project*/
+        instead of Stream API as this is a databases lessons project*/
 
         List<Employee> employees;
 
@@ -94,9 +94,14 @@ public class EmployeeController {
             @RequestParam("employeeId") int employeeId,
             Model model) {
         Employee employee = EMPLOYEE_SERVICE.getById(employeeId);
-        model.addAttribute("employee", employee);
-        model.addAttribute("departments", DEPARTMENT_SERVICE.getAll());
-        return "employees/employeesUpdateForm";
+        if (employee == null) {
+            model.addAttribute("employeeNotFound", new Employee());
+            return "redirect:/employees/?employeeNotFound=" + employeeId;
+        } else {
+            model.addAttribute("employee", employee);
+            model.addAttribute("departments", DEPARTMENT_SERVICE.getAll());
+            return "employees/employeesUpdateForm";
+        }
     }
 
     @GetMapping("/search")
