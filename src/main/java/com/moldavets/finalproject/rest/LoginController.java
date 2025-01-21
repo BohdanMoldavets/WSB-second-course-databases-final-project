@@ -11,4 +11,9 @@ public class LoginController {
         return "login";
     }
 
+    @GetMapping("access-denied")
+    public String getAccessDeniedPage() {
+        return "access-denied";
+    }
+
 }
