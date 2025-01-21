@@ -55,7 +55,6 @@
         </a>
 
         <div>
-
             <form>
                 <label>
                     <select name="sort">
@@ -69,7 +68,6 @@
                 </label>
                 <input type="submit" value="Sort">
             </form>
-
         </div>
 
         <div>
@@ -88,6 +86,10 @@
                 Date Stamps
             </a>
         </div>
+    </div>
+
+    <div th:if="${param.departmentNotFound}">
+        <span style="color: red" th:text="'Not found salary with id - ' + ${param.departmentNotFound}"></span>
     </div>
 
     <table class="table table-bordered table-striped">

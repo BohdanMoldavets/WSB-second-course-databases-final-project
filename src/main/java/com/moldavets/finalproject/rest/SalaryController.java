@@ -65,8 +65,14 @@ public class SalaryController {
     public String updateForm(@RequestParam("salaryId") int salaryId,
                              Model model) {
 
-        model.addAttribute("salary", SALARY_SERVICE.getById(salaryId));
-        return "salaries/salariesUpdateForm";
+        Salary salary = SALARY_SERVICE.getById(salaryId);
+
+        if(salary == null) {
+            return "redirect:/salaries/?salaryNotFound=" + salaryId;
+        } else {
+            model.addAttribute("salary", salary);
+            return "salaries/salariesUpdateForm";
+        }
     }
 
     @PostMapping("/update")

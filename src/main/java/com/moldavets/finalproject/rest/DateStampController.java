@@ -63,8 +63,14 @@ public class DateStampController {
     public String updateForm(@RequestParam("dateStampId") int dateStampId,
                              Model model) {
 
-        model.addAttribute("dateStamp", DATE_STAMP_SERVICE.getById(dateStampId));
-        return "datestamps/datestampsUpdateForm";
+        DateStamp dateStamp = DATE_STAMP_SERVICE.getById(dateStampId);
+
+        if(dateStamp == null) {
+            return "redirect:/datestamps/?dateStampNotFound=" + dateStampId;
+        } else {
+            model.addAttribute("dateStamp", dateStamp);
+            return "datestamps/datestampsUpdateForm";
+        }
     }
 
     @PostMapping("/makePayment")

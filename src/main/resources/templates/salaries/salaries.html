@@ -87,6 +87,10 @@
         </div>
     </div>
 
+    <div th:if="${param.salaryNotFound}">
+        <span style="color: red" th:text="'Not found salary with id - ' + ${param.salaryNotFound}"></span>
+    </div>
+
     <table class="table table-bordered table-striped">
         <thead class="table-dark">
         <tr>

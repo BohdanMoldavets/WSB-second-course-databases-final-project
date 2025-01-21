@@ -1,6 +1,7 @@
 package com.moldavets.finalproject.rest;
 
 import com.moldavets.finalproject.entity.Department;
+import com.moldavets.finalproject.entity.Employee;
 import com.moldavets.finalproject.service.DepartmentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,8 +62,13 @@ public class DepartmentController {
     @GetMapping("/updateForm")
     public String updateForm(@RequestParam("departmentId") int departmentId,
                              Model model) {
-        model.addAttribute("department", DEPARTMENT_SERVICE.getById(departmentId));
-        return "departments/departmentsUpdateForm";
+        Department department = DEPARTMENT_SERVICE.getById(departmentId);
+        if(department == null) {
+            return "redirect:/departments/?departmentNotFound=" + departmentId;
+        } else {
+            model.addAttribute("department", department);
+            return "departments/departmentsUpdateForm";
+        }
     }
 
     @PostMapping("/save")
