@@ -8,8 +8,10 @@ import com.moldavets.finalproject.service.DepartmentService;
 import com.moldavets.finalproject.service.EmployeeService;
 import com.moldavets.finalproject.service.SalaryService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,10 +19,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -55,9 +54,14 @@ public class EmployeeController {
             @RequestParam(value = "sort", required = false) String sort,
             Model model) {
 
+        /*In this function, I am required to use sql queries
+        instead of Stream API as this is a database project*/
+
         List<Employee> employees;
+
         if(sort != null) {
             employees = switch (sort) {
+
                 case "IdOrderByAsc" -> EMPLOYEE_SERVICE.getAllOrderByIdAsc();
                 case "IdOrderByDesc" -> EMPLOYEE_SERVICE.getAllOrderByIdDesc();
                 case "firstNameOrderByAsc" -> EMPLOYEE_SERVICE.getAllByOrderByFirstNameAsc();
@@ -98,10 +102,15 @@ public class EmployeeController {
     @GetMapping("/search")
     public String searchEmployee(
             @RequestParam(value = "query", required = false) String query,
+            @RequestParam(value = "sort", required = false) String sort,
             Model model) {
 
         if(query != null) {
-            model.addAttribute("employees", EMPLOYEE_SERVICE.getAllByInputString(query));
+            if(sort != null) {
+                model.addAttribute("employees", sortEmployees(EMPLOYEE_SERVICE.getAllByInputString(query), sort));
+            } else {
+                model.addAttribute("employees", EMPLOYEE_SERVICE.getAllByInputString(query));
+            }
             return "employees/employees";
         } else {
             return "redirect:/employees/?searchError";
@@ -111,6 +120,7 @@ public class EmployeeController {
     @GetMapping("/filter")
     public String filterEmployee(@RequestParam(value = "department", required = false) String department,
                                  @RequestParam(value = "birthday", required = false) String birthday,
+                                 @RequestParam(value = "sort", required = false) String sort,
                                  Model model) {
 
         List<Employee> employees = EMPLOYEE_SERVICE.getAll();
@@ -129,6 +139,10 @@ public class EmployeeController {
                     .collect(Collectors.toList());
         } else {
             return "redirect:/employees/?filterError";
+        }
+
+        if(sort != null) {
+            employees = sortEmployees(employees, sort);
         }
 
         model.addAttribute("employees", employees);
@@ -176,6 +190,56 @@ public class EmployeeController {
     public String delete(@RequestParam("employeeId") int employeeId) {
         EMPLOYEE_SERVICE.deleteById(employeeId);
         return "redirect:/";
+    }
+
+    private static List<Employee> sortEmployees(List<Employee> employees, String sort) {
+
+        List<Employee> sortedEmployees;
+        switch (sort) {
+
+            case "IdOrderByAsc" -> sortedEmployees = employees.stream()
+                    .sorted(Comparator.comparing(Employee::getId))
+                    .toList();
+
+            case "IdOrderByDesc" -> sortedEmployees = employees.stream()
+                    .sorted(Comparator.comparing(Employee::getId).reversed())
+                    .toList();
+
+            case "firstNameOrderByAsc" -> sortedEmployees = employees.stream()
+                    .sorted(Comparator.comparing(Employee::getFirstName))
+                    .toList();
+
+            case "firstNameOrderByDesc" -> sortedEmployees = employees.stream()
+                    .sorted(Comparator.comparing(Employee::getFirstName).reversed())
+                    .toList();
+
+            case "lastNameOrderByAsc" -> sortedEmployees = employees.stream()
+                    .sorted(Comparator.comparing(Employee::getLastName))
+                    .toList();
+
+            case "lastNameOrderByDesc" -> sortedEmployees = employees.stream()
+                    .sorted(Comparator.comparing(Employee::getLastName).reversed())
+                    .toList();
+
+            case "departmentOrderByAsc" -> sortedEmployees = employees.stream()
+                    .sorted(Comparator.comparing(Employee::getDepartment))
+                    .toList();
+
+            case "departmentOrderByDesc" -> sortedEmployees = employees.stream()
+                    .sorted(Comparator.comparing(Employee::getDepartment).reversed())
+                    .toList();
+
+            case "birthdayOrderByAsc" -> sortedEmployees = employees.stream()
+                    .sorted(Comparator.comparing(Employee::getBirthday))
+                    .toList();
+
+            case "birthdayOrderByDesc" -> sortedEmployees = employees.stream()
+                    .sorted(Comparator.comparing(Employee::getBirthday).reversed())
+                    .toList();
+
+            default -> sortedEmployees = employees;
+        }
+        return sortedEmployees;
     }
 
 }

@@ -56,7 +56,7 @@
                 <span>Search</span>
             </div>
             <form th:action="@{/employees/search}">
-                <input type="text" placeholder="Text for search" name="query"/>
+                <input type="text" placeholder="Text for search" name="query" th:value="${param.query}"/>
                 <input type="submit" value="Search">
             </form>
         </div>
@@ -66,8 +66,8 @@
                 <span>Filter</span>
             </div>
             <form th:action="@{/employees/filter}">
-                <input name="department" placeholder="Department"/>
-                <input name="birthday" placeholder="Birthday"/>
+                <input name="department" placeholder="Department" th:value="${param.department}"/>
+                <input name="birthday" placeholder="Birthday" th:value="${param.birthday}"/>
                 <input type="submit" value="Filter"/>
             </form>
         </div>
@@ -84,17 +84,7 @@
             </a>
         </div>
 
-
-<!--        <div>-->
-
-<!--            <form action="#" th:action="@{/employees/search}">-->
-
-<!--                <input type="text" name="q" placeholder="Search"/>-->
-<!--                <input type="submit" value="Submit">-->
-<!--            </form>-->
-
-<!--        </div>-->
-        <div th:if="!${param.query}">
+        <div>
 
             <form>
                 <label>
@@ -111,6 +101,11 @@
                         <option value="birthdayOrderByDesc">Birthday Sorted in descending order</option>
                     </select>
                 </label>
+
+
+                <input type="hidden" name="department" th:if="${param.department}" th:value="${param.department}"/>
+                <input type="hidden" name="birthday" th:if="${param.birthday}"  th:value="${param.birthday}"/>
+                <input type="hidden" name="query" th:if="${param.query}"  th:value="${param.query}"/>
 
                 <input type="submit" value="Sort">
             </form>
