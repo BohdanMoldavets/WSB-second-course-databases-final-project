@@ -1,5 +1,6 @@
 package com.moldavets.finalproject.rest;
 
+import com.moldavets.finalproject.entity.Employee;
 import com.moldavets.finalproject.entity.Salary;
 import com.moldavets.finalproject.service.EmployeeService;
 import com.moldavets.finalproject.service.SalaryService;
@@ -12,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -19,12 +21,10 @@ import java.util.List;
 public class SalaryController {
 
     private final SalaryService SALARY_SERVICE;
-    private final EmployeeService EMPLOYEE_SERVICE;
 
     @Autowired
-    public SalaryController(SalaryService salaryService, EmployeeService employeeService) {
+    public SalaryController(SalaryService salaryService) {
         SALARY_SERVICE = salaryService;
-        EMPLOYEE_SERVICE = employeeService;
     }
 
     @InitBinder
@@ -75,6 +75,24 @@ public class SalaryController {
         }
     }
 
+    @GetMapping("/search")
+    public String searchEmployee(
+            @RequestParam(value = "query", required = false) String query,
+            @RequestParam(value = "sort", required = false) String sort,
+            Model model) {
+
+        if(query != null) {
+            if(sort != null) {
+                model.addAttribute("salaries", sortSalaries(SALARY_SERVICE.getAllByInputString(query), sort));
+            } else {
+                model.addAttribute("salaries", SALARY_SERVICE.getAllByInputString(query));
+            }
+            return "salaries/salaries";
+        } else {
+            return "redirect:/salaries/?searchError";
+        }
+    }
+
     @PostMapping("/update")
     public String updateSalary(@Valid @ModelAttribute("salary") Salary salary,
                                BindingResult bindingResult) {
@@ -84,6 +102,58 @@ public class SalaryController {
         SALARY_SERVICE.update(salary);
         return "redirect:/salaries/";
     }
+
+    private static List<Salary> sortSalaries(List<Salary> salaries, String sort) {
+
+        List<Salary> sortedSalaries;
+
+        switch (sort) {
+
+            case "IdOrderByAsc" -> sortedSalaries = salaries.stream()
+                    .sorted(Comparator.comparing(Salary::getId))
+                    .toList();
+
+            case "idOrderByDesc" -> sortedSalaries = salaries.stream()
+                    .sorted(Comparator.comparing(Salary::getId).reversed())
+                    .toList();
+
+            case "employeeIdOrderByAsc" -> sortedSalaries = salaries.stream()
+                    .sorted(Comparator.comparing((Salary s) -> s.getEmployee().getId()))
+                    .toList();
+
+            case "employeeIdOrderByDesc" -> sortedSalaries = salaries.stream()
+                    .sorted(Comparator.comparing((Salary s) -> s.getEmployee().getId()).reversed())
+                    .toList();
+
+            case "employeeNameOrderByAsc" -> sortedSalaries = salaries.stream()
+                    .sorted(Comparator.comparing((Salary s) -> s.getEmployee().getFirstName()))
+                    .toList();
+
+            case "employeeNameOrderByDesc" -> sortedSalaries = salaries.stream()
+                    .sorted(Comparator.comparing((Salary s) -> s.getEmployee().getFirstName()).reversed())
+                    .toList();
+
+            case "amountOrderByAsc" -> sortedSalaries = salaries.stream()
+                    .sorted(Comparator.comparing(Salary::getAmount))
+                    .toList();
+
+            case "amountOrderByDesc" -> sortedSalaries = salaries.stream()
+                    .sorted(Comparator.comparing(Salary::getAmount).reversed())
+                    .toList();
+
+            case "currencyOrderByAsc" -> sortedSalaries = salaries.stream()
+                    .sorted(Comparator.comparing(Salary::getCurrency))
+                    .toList();
+
+            case "currencyOrderByDesc" -> sortedSalaries = salaries.stream()
+                    .sorted(Comparator.comparing(Salary::getCurrency).reversed())
+                    .toList();
+
+            default -> sortedSalaries = salaries;
+        }
+        return sortedSalaries;
+    }
+
 }
 
 

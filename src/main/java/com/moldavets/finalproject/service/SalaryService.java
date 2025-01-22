@@ -19,6 +19,8 @@ public interface SalaryService {
     List<Salary> getAllOrderByCurrencyAsc();
     List<Salary> getAllOrderByCurrencyDesc();
 
+    List<Salary> getAllByInputString(String query);
+
     void save(Salary salary);
     void update(Salary salary);
 
