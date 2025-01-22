@@ -18,7 +18,7 @@
 
     <div class="navbar align-items-center justify-content-between">
         <div>
-            <h3>Accounting Salaries</h3>
+            <h3><a th:href="@{/salaries/}" style="text-decoration: none">Accounting Salaries</a></h3>
         </div>
         <div sec:authorize="!hasRole('MANAGER')">
             <form action="#" th:action="@{/login}" method="GET">

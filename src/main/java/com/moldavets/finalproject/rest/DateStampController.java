@@ -79,7 +79,7 @@ public class DateStampController {
         DateStamp dateStamp = DATE_STAMP_SERVICE.getById(dateStampId);
 
         if(dateStamp != null) {
-            dateStamp.setPaymentDate(LocalDate.now().toString());
+            dateStamp.setPaymentDate(LocalDate.now().plusMonths(1).toString());
             DATE_STAMP_SERVICE.update(dateStamp);
         }
 

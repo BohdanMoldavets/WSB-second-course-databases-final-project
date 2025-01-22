@@ -18,7 +18,7 @@
 
     <div class="navbar align-items-center justify-content-between">
         <div>
-            <h3>Accounting Date Stamps</h3>
+            <h3><a th:href="@{/datestamps/}" style="text-decoration: none">Accounting Date Stamps</a></h3>
         </div>
         <div sec:authorize="!hasRole('MANAGER')">
             <form action="#" th:action="@{/login}" method="GET">

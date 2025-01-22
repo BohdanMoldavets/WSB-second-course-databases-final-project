@@ -61,7 +61,12 @@
         </div>
 
         <div th:if="!${param.query}" style="float: right">
-            <div style="font-weight: 600;margin: 0">
+            <div th:if="${param.filterError}">
+                <span style="color: red">Something went wrong..</span>
+                <br>
+                <span style="color: red">Don't forget that at least one field must be non-empty</span>
+            </div>
+            <div th:if="!${param.filterError}" style="font-weight: 600;margin: 0">
                 <span>Filter</span>
             </div>
             <form th:action="@{/employees/filter}">
