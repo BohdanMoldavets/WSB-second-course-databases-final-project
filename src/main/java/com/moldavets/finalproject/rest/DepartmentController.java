@@ -74,11 +74,13 @@ public class DepartmentController {
     @PostMapping("/save")
     public String saveDepartment(@Valid @ModelAttribute("departments") Department department,
                                  BindingResult bindingResult) {
+
         if(bindingResult.hasErrors()) {
             return "departments/departmentsAddForm";
         }
+
         DEPARTMENT_SERVICE.save(department);
-        return "redirect:/departments/";
+        return "redirect:/departments/?addedDepartmentId=" + department.getId();
     }
 
     @PostMapping("/update")
@@ -88,12 +90,12 @@ public class DepartmentController {
             return "redirect:/departments/updateForm?departmentId=" + department.getId() + "&error";
         }
         DEPARTMENT_SERVICE.save(department);
-        return "redirect:/departments/";
+        return "redirect:/departments/?updatedDepartmentId=" + department.getId();
     }
 
     @PostMapping("/delete")
     public String deleteDepartment(@RequestParam("departmentId") int departmentId) {
         DEPARTMENT_SERVICE.delete(departmentId);
-        return "redirect:/departments/";
+        return "redirect:/departments/?deletedDepartmentId=" + departmentId;
     }
 }

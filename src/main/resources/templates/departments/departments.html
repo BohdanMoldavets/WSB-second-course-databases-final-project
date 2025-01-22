@@ -137,5 +137,37 @@
 
 </div>
 
+<script>
+    function getURLParameter(name) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(name);
+    }
+
+    function isValidId(value) {
+        return /^\d+$/.test(value);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const addedDepartmentId = getURLParameter('addedDepartmentId');
+        const deletedDepartmentId = getURLParameter('deletedDepartmentId');
+        const updatedDepartmentId = getURLParameter('updatedDepartmentId');
+
+        let message = null;
+
+        if (addedDepartmentId && isValidId(addedDepartmentId)) {
+            message = `Added department with Id - ${addedDepartmentId}`;
+        } else if (deletedDepartmentId && isValidId(deletedDepartmentId)) {
+            message = `Deleted department with Id - ${deletedDepartmentId}`;
+        } else if (updatedDepartmentId && isValidId(updatedDepartmentId)) {
+            message = `Updated department with Id - ${updatedDepartmentId}`;
+        }
+
+        if (message) {
+            alert(message);
+            window.location.href = '/departments/';
+        }
+    });
+</script>
+
 </body>
 </html>

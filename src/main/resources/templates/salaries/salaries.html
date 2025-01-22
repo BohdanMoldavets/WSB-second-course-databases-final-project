@@ -144,5 +144,31 @@
 
 </div>
 
+<script>
+    function getURLParameter(name) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(name);
+    }
+
+    function isValidId(value) {
+        return /^\d+$/.test(value);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const updatedSalaryId = getURLParameter('updatedSalaryId');
+
+        let message = null;
+
+        if (updatedSalaryId && isValidId(updatedSalaryId)) {
+            message = `Updated salary with Id - ${updatedSalaryId}`;
+        }
+
+        if (message) {
+            alert(message);
+            window.location.href = '/salaries/';
+        }
+    });
+</script>
+
 </body>
 </html>

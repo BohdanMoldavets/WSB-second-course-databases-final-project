@@ -96,11 +96,13 @@ public class SalaryController {
     @PostMapping("/update")
     public String updateSalary(@Valid @ModelAttribute("salary") Salary salary,
                                BindingResult bindingResult) {
+
         if(bindingResult.hasErrors()) {
             return "redirect:/salaries/updateForm?salaryId=" + salary.getId() + "&error";
         }
+
         SALARY_SERVICE.update(salary);
-        return "redirect:/salaries/";
+        return "redirect:/salaries/?updatedSalaryId=" + salary.getId();
     }
 
     private static List<Salary> sortSalaries(List<Salary> salaries, String sort) {

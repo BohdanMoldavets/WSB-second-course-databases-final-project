@@ -163,7 +163,7 @@ public class EmployeeController {
         }
 
         EMPLOYEE_SERVICE.save(employee);
-        return "redirect:/";
+        return "redirect:/employees/?updatedEmployeeId=" + employee.getId();
     }
 
     @PostMapping("/save")
@@ -188,13 +188,13 @@ public class EmployeeController {
         employee.setDate(tempDateStamp);
 
         EMPLOYEE_SERVICE.save(employee);
-        return "redirect:/";
+        return "redirect:/employees/?addedEmployeeId=" + employee.getId();
     }
 
     @PostMapping("/delete")
     public String delete(@RequestParam("employeeId") int employeeId) {
         EMPLOYEE_SERVICE.deleteById(employeeId);
-        return "redirect:/";
+        return "redirect:/employees/?deletedEmployeeId=" + employeeId;
     }
 
     private static List<Employee> sortEmployees(List<Employee> employees, String sort) {

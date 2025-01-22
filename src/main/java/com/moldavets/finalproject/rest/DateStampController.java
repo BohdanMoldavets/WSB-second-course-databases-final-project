@@ -81,9 +81,11 @@ public class DateStampController {
         if(dateStamp != null) {
             dateStamp.setPaymentDate(LocalDate.now().plusMonths(1).toString());
             DATE_STAMP_SERVICE.update(dateStamp);
+        } else {
+            return "redirect:/datestamps/?dateStampNotFound=" + dateStampId;
         }
 
-        return "redirect:/datestamps/";
+        return "redirect:/datestamps/?madePaymentToId=" + dateStamp.getEmployee().getId();
     }
 
     @PostMapping("/update")
@@ -93,7 +95,7 @@ public class DateStampController {
             return "redirect:/datestamps/updateForm?dateStampId=" + dateStamp.getId() + "&error";
         }
         DATE_STAMP_SERVICE.update(dateStamp);
-        return "redirect:/datestamps/";
+        return "redirect:/datestamps/?updatedDateStampId=" + dateStamp.getId();
     }
 
 }

@@ -197,5 +197,37 @@
     </table>
 </div>
 
+<script>
+    function getURLParameter(name) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(name);
+    }
+
+    function isValidId(value) {
+        return /^\d+$/.test(value);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const addedEmployeeId = getURLParameter('addedEmployeeId');
+        const deletedEmployeeId = getURLParameter('deletedEmployeeId');
+        const updatedEmployeeId = getURLParameter('updatedEmployeeId');
+
+        let message = null;
+
+        if (addedEmployeeId && isValidId(addedEmployeeId)) {
+            message = `Added employee with Id - ${addedEmployeeId}`;
+        } else if (deletedEmployeeId && isValidId(deletedEmployeeId)) {
+            message = `Deleted employee with Id - ${deletedEmployeeId}`;
+        } else if (updatedEmployeeId && isValidId(updatedEmployeeId)) {
+            message = `Updated employee with Id - ${updatedEmployeeId}`;
+        }
+
+        if (message) {
+            alert(message);
+            window.location.href = '/employees/';
+        }
+    });
+</script>
+
 </body>
 </html>
