@@ -159,7 +159,7 @@ public class EmployeeController {
                          BindingResult bindingResult) {
 
         if(bindingResult.hasErrors()) {
-            return "redirect:/employees/updateForm?employeeId="+employee.getId()+"&error";
+            return "redirect:/employees/updateForm?employeeId=" + employee.getId() + "&error";
         }
 
         EMPLOYEE_SERVICE.save(employee);
@@ -200,50 +200,50 @@ public class EmployeeController {
     private static List<Employee> sortEmployees(List<Employee> employees, String sort) {
 
         List<Employee> sortedEmployees;
-        switch (sort) {
+        sortedEmployees = switch (sort) {
 
-            case "IdOrderByAsc" -> sortedEmployees = employees.stream()
+            case "IdOrderByAsc" -> employees.stream()
                     .sorted(Comparator.comparing(Employee::getId))
                     .toList();
 
-            case "IdOrderByDesc" -> sortedEmployees = employees.stream()
+            case "IdOrderByDesc" -> employees.stream()
                     .sorted(Comparator.comparing(Employee::getId).reversed())
                     .toList();
 
-            case "firstNameOrderByAsc" -> sortedEmployees = employees.stream()
+            case "firstNameOrderByAsc" -> employees.stream()
                     .sorted(Comparator.comparing(Employee::getFirstName))
                     .toList();
 
-            case "firstNameOrderByDesc" -> sortedEmployees = employees.stream()
+            case "firstNameOrderByDesc" -> employees.stream()
                     .sorted(Comparator.comparing(Employee::getFirstName).reversed())
                     .toList();
 
-            case "lastNameOrderByAsc" -> sortedEmployees = employees.stream()
+            case "lastNameOrderByAsc" -> employees.stream()
                     .sorted(Comparator.comparing(Employee::getLastName))
                     .toList();
 
-            case "lastNameOrderByDesc" -> sortedEmployees = employees.stream()
+            case "lastNameOrderByDesc" -> employees.stream()
                     .sorted(Comparator.comparing(Employee::getLastName).reversed())
                     .toList();
 
-            case "departmentOrderByAsc" -> sortedEmployees = employees.stream()
+            case "departmentOrderByAsc" -> employees.stream()
                     .sorted(Comparator.comparing(Employee::getDepartment))
                     .toList();
 
-            case "departmentOrderByDesc" -> sortedEmployees = employees.stream()
+            case "departmentOrderByDesc" -> employees.stream()
                     .sorted(Comparator.comparing(Employee::getDepartment).reversed())
                     .toList();
 
-            case "birthdayOrderByAsc" -> sortedEmployees = employees.stream()
+            case "birthdayOrderByAsc" -> employees.stream()
                     .sorted(Comparator.comparing(Employee::getBirthday))
                     .toList();
 
-            case "birthdayOrderByDesc" -> sortedEmployees = employees.stream()
+            case "birthdayOrderByDesc" -> employees.stream()
                     .sorted(Comparator.comparing(Employee::getBirthday).reversed())
                     .toList();
 
-            default -> sortedEmployees = employees;
-        }
+            default -> employees;
+        };
         return sortedEmployees;
     }
 

@@ -49,6 +49,19 @@
          sec:authorize="hasRole('MANAGER')"
          style="padding: 0">
 
+        <div style="margin-bottom: 20px">
+            <div th:if="${param.searchError}">
+                <span style="color: red">This field is required for search</span>
+            </div>
+            <div th:if="!${param.searchError}" style="font-weight: 600;margin: 0">
+                <span>Search</span>
+            </div>
+            <form th:action="@{/datestamps/search}">
+                <input type="text" placeholder="Text for search" name="query" th:value="${param.query}"/>
+                <input type="submit" value="Search">
+            </form>
+        </div>
+
         <div>
             <form>
                 <label>

@@ -1,8 +1,6 @@
 package com.moldavets.finalproject.rest;
 
-import com.moldavets.finalproject.entity.Employee;
 import com.moldavets.finalproject.entity.Salary;
-import com.moldavets.finalproject.service.EmployeeService;
 import com.moldavets.finalproject.service.SalaryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +74,7 @@ public class SalaryController {
     }
 
     @GetMapping("/search")
-    public String searchEmployee(
+    public String searchSalary(
             @RequestParam(value = "query", required = false) String query,
             @RequestParam(value = "sort", required = false) String sort,
             Model model) {
@@ -109,50 +107,51 @@ public class SalaryController {
 
         List<Salary> sortedSalaries;
 
-        switch (sort) {
+         sortedSalaries = switch (sort) {
 
-            case "IdOrderByAsc" -> sortedSalaries = salaries.stream()
+            case "IdOrderByAsc" -> salaries.stream()
                     .sorted(Comparator.comparing(Salary::getId))
                     .toList();
 
-            case "idOrderByDesc" -> sortedSalaries = salaries.stream()
+            case "idOrderByDesc" -> salaries.stream()
                     .sorted(Comparator.comparing(Salary::getId).reversed())
                     .toList();
 
-            case "employeeIdOrderByAsc" -> sortedSalaries = salaries.stream()
+            case "employeeIdOrderByAsc" -> salaries.stream()
                     .sorted(Comparator.comparing((Salary s) -> s.getEmployee().getId()))
                     .toList();
 
-            case "employeeIdOrderByDesc" -> sortedSalaries = salaries.stream()
+            case "employeeIdOrderByDesc" -> salaries.stream()
                     .sorted(Comparator.comparing((Salary s) -> s.getEmployee().getId()).reversed())
                     .toList();
 
-            case "employeeNameOrderByAsc" -> sortedSalaries = salaries.stream()
+            case "employeeNameOrderByAsc" -> salaries.stream()
                     .sorted(Comparator.comparing((Salary s) -> s.getEmployee().getFirstName()))
                     .toList();
 
-            case "employeeNameOrderByDesc" -> sortedSalaries = salaries.stream()
+            case "employeeNameOrderByDesc" -> salaries.stream()
                     .sorted(Comparator.comparing((Salary s) -> s.getEmployee().getFirstName()).reversed())
                     .toList();
 
-            case "amountOrderByAsc" -> sortedSalaries = salaries.stream()
+            case "amountOrderByAsc" -> salaries.stream()
                     .sorted(Comparator.comparing(Salary::getAmount))
                     .toList();
 
-            case "amountOrderByDesc" -> sortedSalaries = salaries.stream()
+            case "amountOrderByDesc" -> salaries.stream()
                     .sorted(Comparator.comparing(Salary::getAmount).reversed())
                     .toList();
 
-            case "currencyOrderByAsc" -> sortedSalaries = salaries.stream()
+            case "currencyOrderByAsc" -> salaries.stream()
                     .sorted(Comparator.comparing(Salary::getCurrency))
                     .toList();
 
-            case "currencyOrderByDesc" -> sortedSalaries = salaries.stream()
+            case "currencyOrderByDesc" -> salaries.stream()
                     .sorted(Comparator.comparing(Salary::getCurrency).reversed())
                     .toList();
 
-            default -> sortedSalaries = salaries;
-        }
+            default -> salaries;
+        };
+
         return sortedSalaries;
     }
 

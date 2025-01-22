@@ -1,6 +1,7 @@
 package com.moldavets.finalproject.service;
 
 import com.moldavets.finalproject.entity.DateStamp;
+import com.moldavets.finalproject.entity.Employee;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ public interface DateStampService {
     List<DateStamp> getAllOrderByEmploymentDateDesc();
     List<DateStamp> getAllOrderByPaymentDateAsc();
     List<DateStamp> getAllOrderByPaymentDateDesc();
+
+    List<DateStamp> getAllByInputString(String query);
 
     void save(DateStamp dateStamp);
     void update(DateStamp dateStamp);
