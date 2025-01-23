@@ -18,7 +18,7 @@
 
     <div class="navbar align-items-center justify-content-between">
         <div>
-            <h3>Accounting Salaries</h3>
+            <h3><a th:href="@{/salaries/}" style="text-decoration: none">Accounting Salaries</a></h3>
         </div>
         <div sec:authorize="!hasRole('MANAGER')">
             <form action="#" th:action="@{/login}" method="GET">
@@ -49,6 +49,19 @@
          sec:authorize="hasRole('MANAGER')"
          style="padding: 0">
 
+        <div style="margin-bottom: 20px">
+            <div th:if="${param.searchError}">
+                <span style="color: red">This field is required for search</span>
+            </div>
+            <div th:if="!${param.searchError}" style="font-weight: 600;margin: 0">
+                <span>Search</span>
+            </div>
+            <form th:action="@{/salaries/search}">
+                <input type="text" placeholder="Text for search" name="query" th:value="${param.query}"/>
+                <input type="submit" value="Search">
+            </form>
+        </div>
+
         <div>
             <form>
                 <label>
@@ -65,6 +78,9 @@
                         <option value="currencyOrderByDesc">Currency Sorted in descending order</option>
                     </select>
                 </label>
+
+                <input type="hidden" name="query" th:if="${param.query}"  th:value="${param.query}"/>
+
                 <input type="submit" value="Sort">
             </form>
         </div>
@@ -85,6 +101,10 @@
                 Date Stamps
             </a>
         </div>
+    </div>
+
+    <div th:if="${param.salaryNotFound}">
+        <span style="color: red" th:text="'Not found salary with id - ' + ${param.salaryNotFound}"></span>
     </div>
 
     <table class="table table-bordered table-striped">
@@ -123,6 +143,32 @@
     </table>
 
 </div>
+
+<script>
+    function getURLParameter(name) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(name);
+    }
+
+    function isValidId(value) {
+        return /^\d+$/.test(value);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const updatedSalaryId = getURLParameter('updatedSalaryId');
+
+        let message = null;
+
+        if (updatedSalaryId && isValidId(updatedSalaryId)) {
+            message = `Updated salary with Id - ${updatedSalaryId}`;
+        }
+
+        if (message) {
+            alert(message);
+            window.location.href = '/salaries/';
+        }
+    });
+</script>
 
 </body>
 </html>

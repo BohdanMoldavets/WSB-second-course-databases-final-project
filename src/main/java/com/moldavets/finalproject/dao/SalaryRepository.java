@@ -2,6 +2,7 @@ package com.moldavets.finalproject.dao;
 
 import com.moldavets.finalproject.entity.Salary;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,4 +20,12 @@ public interface SalaryRepository extends JpaRepository<Salary, Integer> {
     List<Salary> findAllByOrderByAmountDesc();
     List<Salary> findAllByOrderByCurrencyAsc();
     List<Salary> findAllByOrderByCurrencyDesc();
+
+    @Query("SELECT s FROM Salary s WHERE CAST(s.id AS string) LIKE ?1 OR " +
+            "CAST(s.employee.id AS string) LIKE ?1 OR " +
+            "s.employee.firstName LIKE ?1 OR " +
+            "s.employee.lastName LIKE ?1 OR " +
+            "CAST(s.amount AS string ) LIKE ?1 OR " +
+            "s.currency LIKE ?1")
+    List<Salary> findAllByInputString(String query);
 }

@@ -85,6 +85,11 @@ public class DateStampServiceImpl implements DateStampService {
     }
 
     @Override
+    public List<DateStamp> getAllByInputString(String query) {
+        return DATE_STAMP_REPOSITORY.findAllByInputString("%" + query + "%");
+    }
+
+    @Override
     @Transactional
     public void save(DateStamp dateStamp) {
         DATE_STAMP_REPOSITORY.save(dateStamp);

@@ -1,7 +1,6 @@
 package com.moldavets.finalproject.rest;
 
 import com.moldavets.finalproject.entity.Salary;
-import com.moldavets.finalproject.service.EmployeeService;
 import com.moldavets.finalproject.service.SalaryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -19,12 +19,10 @@ import java.util.List;
 public class SalaryController {
 
     private final SalaryService SALARY_SERVICE;
-    private final EmployeeService EMPLOYEE_SERVICE;
 
     @Autowired
-    public SalaryController(SalaryService salaryService, EmployeeService employeeService) {
+    public SalaryController(SalaryService salaryService) {
         SALARY_SERVICE = salaryService;
-        EMPLOYEE_SERVICE = employeeService;
     }
 
     @InitBinder
@@ -65,19 +63,98 @@ public class SalaryController {
     public String updateForm(@RequestParam("salaryId") int salaryId,
                              Model model) {
 
-        model.addAttribute("salary", SALARY_SERVICE.getById(salaryId));
-        return "salaries/salariesUpdateForm";
+        Salary salary = SALARY_SERVICE.getById(salaryId);
+
+        if(salary == null) {
+            return "redirect:/salaries/?salaryNotFound=" + salaryId;
+        } else {
+            model.addAttribute("salary", salary);
+            return "salaries/salariesUpdateForm";
+        }
+    }
+
+    @GetMapping("/search")
+    public String searchSalary(
+            @RequestParam(value = "query", required = false) String query,
+            @RequestParam(value = "sort", required = false) String sort,
+            Model model) {
+
+        if(query != null) {
+            if(sort != null) {
+                model.addAttribute("salaries", sortSalaries(SALARY_SERVICE.getAllByInputString(query), sort));
+            } else {
+                model.addAttribute("salaries", SALARY_SERVICE.getAllByInputString(query));
+            }
+            return "salaries/salaries";
+        } else {
+            return "redirect:/salaries/?searchError";
+        }
     }
 
     @PostMapping("/update")
     public String updateSalary(@Valid @ModelAttribute("salary") Salary salary,
                                BindingResult bindingResult) {
+
         if(bindingResult.hasErrors()) {
             return "redirect:/salaries/updateForm?salaryId=" + salary.getId() + "&error";
         }
+
         SALARY_SERVICE.update(salary);
-        return "redirect:/salaries/";
+        return "redirect:/salaries/?updatedSalaryId=" + salary.getId();
     }
+
+    private static List<Salary> sortSalaries(List<Salary> salaries, String sort) {
+
+        List<Salary> sortedSalaries;
+
+         sortedSalaries = switch (sort) {
+
+            case "IdOrderByAsc" -> salaries.stream()
+                    .sorted(Comparator.comparing(Salary::getId))
+                    .toList();
+
+            case "idOrderByDesc" -> salaries.stream()
+                    .sorted(Comparator.comparing(Salary::getId).reversed())
+                    .toList();
+
+            case "employeeIdOrderByAsc" -> salaries.stream()
+                    .sorted(Comparator.comparing((Salary s) -> s.getEmployee().getId()))
+                    .toList();
+
+            case "employeeIdOrderByDesc" -> salaries.stream()
+                    .sorted(Comparator.comparing((Salary s) -> s.getEmployee().getId()).reversed())
+                    .toList();
+
+            case "employeeNameOrderByAsc" -> salaries.stream()
+                    .sorted(Comparator.comparing((Salary s) -> s.getEmployee().getFirstName()))
+                    .toList();
+
+            case "employeeNameOrderByDesc" -> salaries.stream()
+                    .sorted(Comparator.comparing((Salary s) -> s.getEmployee().getFirstName()).reversed())
+                    .toList();
+
+            case "amountOrderByAsc" -> salaries.stream()
+                    .sorted(Comparator.comparing(Salary::getAmount))
+                    .toList();
+
+            case "amountOrderByDesc" -> salaries.stream()
+                    .sorted(Comparator.comparing(Salary::getAmount).reversed())
+                    .toList();
+
+            case "currencyOrderByAsc" -> salaries.stream()
+                    .sorted(Comparator.comparing(Salary::getCurrency))
+                    .toList();
+
+            case "currencyOrderByDesc" -> salaries.stream()
+                    .sorted(Comparator.comparing(Salary::getCurrency).reversed())
+                    .toList();
+
+            default -> salaries;
+        };
+
+        return sortedSalaries;
+    }
+
 }
 
 

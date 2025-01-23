@@ -74,6 +74,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public List<Employee> getAllByInputString(String query) {
+        return EMPLOYEE_REPOSITORY.findAllByInputString("%" + query + "%");
+    }
+
+    @Override
     public Employee getById(int id) {
         return EMPLOYEE_REPOSITORY.findById(id).orElse(null);
     }

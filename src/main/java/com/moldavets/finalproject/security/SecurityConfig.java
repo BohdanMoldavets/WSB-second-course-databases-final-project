@@ -22,15 +22,38 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(configurer ->
                 configurer
-                        .requestMatchers("/**").permitAll()
-                        .requestMatchers("/employees").permitAll()
+                        .requestMatchers("/").permitAll()
+
+                        .requestMatchers("/employees/").permitAll()
+                        .requestMatchers("/employees/save").hasRole("MANAGER")
+                        .requestMatchers("/employees/update").hasRole("MANAGER")
+                        .requestMatchers("/employees/updateForm").hasRole("MANAGER")
+                        .requestMatchers("/employees/delete").hasRole("ADMIN")
+
+                        .requestMatchers("/departments").hasRole("MANAGER")
+                        .requestMatchers("/departments/save").hasRole("MANAGER")
+                        .requestMatchers("/departments/update").hasRole("MANAGER")
+                        .requestMatchers("/departments/updateForm").hasRole("MANAGER")
+                        .requestMatchers("/departments/delete").hasRole("ADMIN")
+
+                        .requestMatchers("/datestamps").hasRole("MANAGER")
+                        .requestMatchers("/datestamps/save").hasRole("MANAGER")
+                        .requestMatchers("/datestamps/update").hasRole("MANAGER")
+                        .requestMatchers("/datestamps/updateForm").hasRole("MANAGER")
+                        .requestMatchers("/datestamps/delete").hasRole("ADMIN")
+
+                        .requestMatchers("/salaries/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
         ).formLogin(form ->
                 form
                         .loginPage("/login")
                         .loginProcessingUrl("/authenticate")
                         .permitAll()
-        ).logout(logout -> logout.permitAll().logoutSuccessUrl("/login?logout"));
+        ).logout(logout -> logout.permitAll().logoutSuccessUrl("/login?logout")
+        ).exceptionHandling(
+                configurer ->
+                        configurer.accessDeniedPage("/access-denied")
+        );
         return http.build();
     }
 }

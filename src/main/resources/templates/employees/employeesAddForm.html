@@ -26,6 +26,7 @@
                      th:object="${employee}" method="POST">
 
       <span th:if="${param.error}" style="color: red">Something went wrong.. Don't forget that all fields must be non-empty</span>
+      <br th:if="${param.error}">
 
       First Name
       <input type="text" th:field="*{firstName}" placeholder="First Name"  class="form-control mb-4 w-25" />
@@ -55,9 +56,9 @@
         <div style="margin-bottom: 15px">
           Currency
           <select th:field="*{salary.currency}">
+            <option value="PLN">PLN</option>
             <option value="USD">USD</option>
             <option value="EUR">EUR</option>
-            <option value="PLN">PLN</option>
           </select>
         </div>
       </div>

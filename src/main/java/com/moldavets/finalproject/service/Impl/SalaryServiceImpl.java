@@ -86,6 +86,11 @@ public class SalaryServiceImpl implements SalaryService {
     }
 
     @Override
+    public List<Salary> getAllByInputString(String query) {
+        return SALARY_REPOSITORY.findAllByInputString("%" + query + "%");
+    }
+
+    @Override
     @Transactional
     public void save(Salary salary) {
         SALARY_REPOSITORY.save(salary);

@@ -8,8 +8,10 @@ import com.moldavets.finalproject.service.DepartmentService;
 import com.moldavets.finalproject.service.EmployeeService;
 import com.moldavets.finalproject.service.SalaryService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,9 +19,8 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Controller
@@ -51,11 +52,16 @@ public class EmployeeController {
     @GetMapping("/")
     public String listEmployees(
             @RequestParam(value = "sort", required = false) String sort,
-            Model model ) {
+            Model model) {
+
+        /*In this function, I am required to use sql queries
+        instead of Stream API as this is a databases lessons project*/
 
         List<Employee> employees;
+
         if(sort != null) {
             employees = switch (sort) {
+
                 case "IdOrderByAsc" -> EMPLOYEE_SERVICE.getAllOrderByIdAsc();
                 case "IdOrderByDesc" -> EMPLOYEE_SERVICE.getAllOrderByIdDesc();
                 case "firstNameOrderByAsc" -> EMPLOYEE_SERVICE.getAllByOrderByFirstNameAsc();
@@ -88,35 +94,64 @@ public class EmployeeController {
             @RequestParam("employeeId") int employeeId,
             Model model) {
         Employee employee = EMPLOYEE_SERVICE.getById(employeeId);
-        model.addAttribute("employee", employee);
-        model.addAttribute("departments", DEPARTMENT_SERVICE.getAll());
-        return "employees/employeesUpdateForm";
+        if (employee == null) {
+            model.addAttribute("employeeNotFound", new Employee());
+            return "redirect:/employees/?employeeNotFound=" + employeeId;
+        } else {
+            model.addAttribute("employee", employee);
+            model.addAttribute("departments", DEPARTMENT_SERVICE.getAll());
+            return "employees/employeesUpdateForm";
+        }
     }
 
     @GetMapping("/search")
     public String searchEmployee(
-            @RequestParam("q") String query,
+            @RequestParam(value = "query", required = false) String query,
+            @RequestParam(value = "sort", required = false) String sort,
             Model model) {
 
-        Employee searchEmployee;
-        String[] splitQuery = query.split(",");
+        if(query != null) {
+            if(sort != null) {
+                model.addAttribute("employees", sortEmployees(EMPLOYEE_SERVICE.getAllByInputString(query), sort));
+            } else {
+                model.addAttribute("employees", EMPLOYEE_SERVICE.getAllByInputString(query));
+            }
+            return "employees/employees";
+        } else {
+            return "redirect:/employees/?searchError";
+        }
+    }
 
-        switch (splitQuery.length) {
-            case 1:
-                System.out.println("One");
-                //todo code like - EMPLOYEE_SERVICE.findByOneParam(String fistParam)
-                break;
+    @GetMapping("/filter")
+    public String filterEmployee(@RequestParam(value = "department", required = false) String department,
+                                 @RequestParam(value = "birthday", required = false) String birthday,
+                                 @RequestParam(value = "sort", required = false) String sort,
+                                 Model model) {
 
-            case 2:
-                System.out.println("Two");
-                //todo code like - EMPLOYEE_SERVICE.findByTwoParams(String fistParam,String secondParam)
-                break;
+        List<Employee> employees = EMPLOYEE_SERVICE.getAll();
 
-            default:
-                return "redirect:/employees/?&searchError";
+        if(department != null && birthday != null) {
+            employees = employees.stream()
+                    .filter(e-> e.getDepartment().startsWith(department) && e.getBirthday().startsWith(birthday))
+                    .collect(Collectors.toList());
+        } else if (department != null) {
+            employees = employees.stream()
+                    .filter(e-> e.getDepartment().startsWith(department))
+                    .collect(Collectors.toList());
+        } else if (birthday != null) {
+            employees = employees.stream()
+                    .filter(e-> e.getBirthday().startsWith(birthday))
+                    .collect(Collectors.toList());
+        } else {
+            return "redirect:/employees/?filterError";
         }
 
-        return "redirect:/";
+        if(sort != null) {
+            employees = sortEmployees(employees, sort);
+        }
+
+        model.addAttribute("employees", employees);
+        return "employees/employees";
     }
 
     @PostMapping("/update")
@@ -124,11 +159,11 @@ public class EmployeeController {
                          BindingResult bindingResult) {
 
         if(bindingResult.hasErrors()) {
-            return "redirect:/employees/updateForm?employeeId="+employee.getId()+"&error";
+            return "redirect:/employees/updateForm?employeeId=" + employee.getId() + "&error";
         }
 
         EMPLOYEE_SERVICE.save(employee);
-        return "redirect:/";
+        return "redirect:/employees/?updatedEmployeeId=" + employee.getId();
     }
 
     @PostMapping("/save")
@@ -153,13 +188,63 @@ public class EmployeeController {
         employee.setDate(tempDateStamp);
 
         EMPLOYEE_SERVICE.save(employee);
-        return "redirect:/";
+        return "redirect:/employees/?addedEmployeeId=" + employee.getId();
     }
 
     @PostMapping("/delete")
     public String delete(@RequestParam("employeeId") int employeeId) {
         EMPLOYEE_SERVICE.deleteById(employeeId);
-        return "redirect:/";
+        return "redirect:/employees/?deletedEmployeeId=" + employeeId;
+    }
+
+    private static List<Employee> sortEmployees(List<Employee> employees, String sort) {
+
+        List<Employee> sortedEmployees;
+        sortedEmployees = switch (sort) {
+
+            case "IdOrderByAsc" -> employees.stream()
+                    .sorted(Comparator.comparing(Employee::getId))
+                    .toList();
+
+            case "IdOrderByDesc" -> employees.stream()
+                    .sorted(Comparator.comparing(Employee::getId).reversed())
+                    .toList();
+
+            case "firstNameOrderByAsc" -> employees.stream()
+                    .sorted(Comparator.comparing(Employee::getFirstName))
+                    .toList();
+
+            case "firstNameOrderByDesc" -> employees.stream()
+                    .sorted(Comparator.comparing(Employee::getFirstName).reversed())
+                    .toList();
+
+            case "lastNameOrderByAsc" -> employees.stream()
+                    .sorted(Comparator.comparing(Employee::getLastName))
+                    .toList();
+
+            case "lastNameOrderByDesc" -> employees.stream()
+                    .sorted(Comparator.comparing(Employee::getLastName).reversed())
+                    .toList();
+
+            case "departmentOrderByAsc" -> employees.stream()
+                    .sorted(Comparator.comparing(Employee::getDepartment))
+                    .toList();
+
+            case "departmentOrderByDesc" -> employees.stream()
+                    .sorted(Comparator.comparing(Employee::getDepartment).reversed())
+                    .toList();
+
+            case "birthdayOrderByAsc" -> employees.stream()
+                    .sorted(Comparator.comparing(Employee::getBirthday))
+                    .toList();
+
+            case "birthdayOrderByDesc" -> employees.stream()
+                    .sorted(Comparator.comparing(Employee::getBirthday).reversed())
+                    .toList();
+
+            default -> employees;
+        };
+        return sortedEmployees;
     }
 
 }

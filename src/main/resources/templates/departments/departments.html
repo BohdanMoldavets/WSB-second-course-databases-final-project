@@ -18,7 +18,7 @@
 
     <div class="navbar align-items-center justify-content-between">
         <div>
-            <h3>Accounting Departments</h3>
+            <h3><a th:href="@{/departments/}" style="text-decoration: none">Accounting Departments</a></h3>
         </div>
         <div sec:authorize="!hasRole('MANAGER')">
             <form action="#" th:action="@{/login}" method="GET">
@@ -50,12 +50,11 @@
          style="padding: 0">
 
         <a th:href="@{/departments/add}"
-           class="btn btn-primary btn-sm mb-3">
+           class="btn btn-success btn-sm mb-3">
             Add Department
         </a>
 
         <div>
-
             <form>
                 <label>
                     <select name="sort">
@@ -69,7 +68,6 @@
                 </label>
                 <input type="submit" value="Sort">
             </form>
-
         </div>
 
         <div>
@@ -88,6 +86,10 @@
                 Date Stamps
             </a>
         </div>
+    </div>
+
+    <div th:if="${param.departmentNotFound}">
+        <span style="color: red" th:text="'Not found department with id - ' + ${param.departmentNotFound}"></span>
     </div>
 
     <table class="table table-bordered table-striped">
@@ -134,6 +136,38 @@
     </table>
 
 </div>
+
+<script>
+    function getURLParameter(name) {
+        const params = new URLSearchParams(window.location.search);
+        return params.get(name);
+    }
+
+    function isValidId(value) {
+        return /^\d+$/.test(value);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const addedDepartmentId = getURLParameter('addedDepartmentId');
+        const deletedDepartmentId = getURLParameter('deletedDepartmentId');
+        const updatedDepartmentId = getURLParameter('updatedDepartmentId');
+
+        let message = null;
+
+        if (addedDepartmentId && isValidId(addedDepartmentId)) {
+            message = `Added department with Id - ${addedDepartmentId}`;
+        } else if (deletedDepartmentId && isValidId(deletedDepartmentId)) {
+            message = `Deleted department with Id - ${deletedDepartmentId}`;
+        } else if (updatedDepartmentId && isValidId(updatedDepartmentId)) {
+            message = `Updated department with Id - ${updatedDepartmentId}`;
+        }
+
+        if (message) {
+            alert(message);
+            window.location.href = '/departments/';
+        }
+    });
+</script>
 
 </body>
 </html>

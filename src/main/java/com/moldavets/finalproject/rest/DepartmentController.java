@@ -1,6 +1,7 @@
 package com.moldavets.finalproject.rest;
 
 import com.moldavets.finalproject.entity.Department;
+import com.moldavets.finalproject.entity.Employee;
 import com.moldavets.finalproject.service.DepartmentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,18 +62,25 @@ public class DepartmentController {
     @GetMapping("/updateForm")
     public String updateForm(@RequestParam("departmentId") int departmentId,
                              Model model) {
-        model.addAttribute("department", DEPARTMENT_SERVICE.getById(departmentId));
-        return "departments/departmentsUpdateForm";
+        Department department = DEPARTMENT_SERVICE.getById(departmentId);
+        if(department == null) {
+            return "redirect:/departments/?departmentNotFound=" + departmentId;
+        } else {
+            model.addAttribute("department", department);
+            return "departments/departmentsUpdateForm";
+        }
     }
 
     @PostMapping("/save")
     public String saveDepartment(@Valid @ModelAttribute("departments") Department department,
                                  BindingResult bindingResult) {
+
         if(bindingResult.hasErrors()) {
             return "departments/departmentsAddForm";
         }
+
         DEPARTMENT_SERVICE.save(department);
-        return "redirect:/departments/";
+        return "redirect:/departments/?addedDepartmentId=" + department.getId();
     }
 
     @PostMapping("/update")
@@ -82,12 +90,12 @@ public class DepartmentController {
             return "redirect:/departments/updateForm?departmentId=" + department.getId() + "&error";
         }
         DEPARTMENT_SERVICE.save(department);
-        return "redirect:/departments/";
+        return "redirect:/departments/?updatedDepartmentId=" + department.getId();
     }
 
     @PostMapping("/delete")
     public String deleteDepartment(@RequestParam("departmentId") int departmentId) {
         DEPARTMENT_SERVICE.delete(departmentId);
-        return "redirect:/departments/";
+        return "redirect:/departments/?deletedDepartmentId=" + departmentId;
     }
 }

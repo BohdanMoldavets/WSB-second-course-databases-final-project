@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Error Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: #343a40;
+    }
+    .error-container {
+      text-align: center;
+      padding: 20px;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      background-color: #ffffff;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    .error-container h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #dc3545;
+    }
+    .error-container h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .error-container p {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .error-container a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    .error-container a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<div class="error-container">
+  <h1>Error</h1>
+  <h3 th:text="${error}"></h3>
+  <p>If you believe this is an error, please <a href="mailto:admin@example.com">contact support</a> or return to the <a th:href="@{/}">homepage</a>.</p>
+</div>
+</body>
+</html>
