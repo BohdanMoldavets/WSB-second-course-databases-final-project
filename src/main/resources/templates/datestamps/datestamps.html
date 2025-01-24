@@ -162,13 +162,13 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        const updatedDateStampId = getURLParameter('updatedSalaryId');
+        const updatedDateStampId = getURLParameter('updatedDateStampId');
         const madePaymentToId = getURLParameter('madePaymentToId');
 
         let message = null;
 
         if (updatedDateStampId && isValidId(updatedDateStampId)) {
-            message = `Updated salary with Id - ${updatedDateStampId}`;
+            message = `Updated date stamps with Id - ${updatedDateStampId}`;
         } else if (madePaymentToId && isValidId(madePaymentToId)) {
             message = `Made payment to Employee with id - ${madePaymentToId}`;
         }

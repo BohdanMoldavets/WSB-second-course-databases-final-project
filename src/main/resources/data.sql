@@ -1,9 +1,18 @@
+CREATE TABLE departments (
+	id SERIAL PRIMARY KEY,
+	abbreviation VARCHAR(3) NOT NULL,
+	name VARCHAR(255) NOT NULL,
+	UNIQUE(abbreviation)
+);
+
+
 CREATE TABLE employees (
 	id SERIAL PRIMARY KEY,
 	first_name VARCHAR(255) NOT NULL,
 	last_name VARCHAR(255) NOT NULL,
 	department VARCHAR(3),
-	birthday VARCHAR(12) NOT NULL
+	birthday VARCHAR(12) NOT NULL,
+	FOREIGN KEY (department) REFERENCES departments (abbreviation) ON DELETE SET NULL
 );
 
 CREATE TABLE salaries (
@@ -13,13 +22,6 @@ CREATE TABLE salaries (
 	currency VARCHAR(3) DEFAULT 'PLN',
 	UNIQUE(employee_id),
 	FOREIGN KEY (employee_id) REFERENCES employees (id) ON DELETE CASCADE
-);
-
-CREATE TABLE departments (
-	id SERIAL PRIMARY KEY,
-	abbreviation VARCHAR(3) NOT NULL,
-	name VARCHAR(255) NOT NULL,
-	UNIQUE(abbreviation)
 );
 
 CREATE TABLE date_stamps (

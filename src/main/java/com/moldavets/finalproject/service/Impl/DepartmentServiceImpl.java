@@ -72,10 +72,10 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Transactional
     public void delete(int departmentId) {
         if(DEPARTMENT_REPOSITORY.existsById(departmentId)) {
-            String departmentName = DEPARTMENT_REPOSITORY.findById(departmentId).get().getAbbreviation();
-            ENTITY_MANAGER.createQuery("UPDATE Employee SET department=null WHERE department=:departmentName")
-                    .setParameter("departmentName", departmentName)
-                    .executeUpdate();
+//            String departmentName = DEPARTMENT_REPOSITORY.findById(departmentId).get().getAbbreviation();
+//            ENTITY_MANAGER.createQuery("UPDATE Employee SET department=null WHERE department=:departmentName")
+//                    .setParameter("departmentName", departmentName)
+//                    .executeUpdate();
             DEPARTMENT_REPOSITORY.deleteById(departmentId);
         }
     }
