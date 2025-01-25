@@ -1,7 +1,6 @@
 package com.moldavets.finalproject.rest;
 
 import com.moldavets.finalproject.entity.Department;
-import com.moldavets.finalproject.entity.Employee;
 import com.moldavets.finalproject.service.DepartmentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

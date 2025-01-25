@@ -14,12 +14,10 @@ import java.util.List;
 public class DepartmentServiceImpl implements DepartmentService {
 
     private final DepartmentRepository DEPARTMENT_REPOSITORY;
-    private final EntityManager ENTITY_MANAGER;
 
     @Autowired
-    public DepartmentServiceImpl(DepartmentRepository departmentRepository, EntityManager entityManager) {
+    public DepartmentServiceImpl(DepartmentRepository departmentRepository) {
         this.DEPARTMENT_REPOSITORY = departmentRepository;
-        this.ENTITY_MANAGER = entityManager;
     }
 
     @Override
@@ -72,10 +70,6 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Transactional
     public void delete(int departmentId) {
         if(DEPARTMENT_REPOSITORY.existsById(departmentId)) {
-//            String departmentName = DEPARTMENT_REPOSITORY.findById(departmentId).get().getAbbreviation();
-//            ENTITY_MANAGER.createQuery("UPDATE Employee SET department=null WHERE department=:departmentName")
-//                    .setParameter("departmentName", departmentName)
-//                    .executeUpdate();
             DEPARTMENT_REPOSITORY.deleteById(departmentId);
         }
     }
