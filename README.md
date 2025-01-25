@@ -38,6 +38,8 @@ The system allows users to manage departments, employees, salaries and dates. It
 - **Flexibility:** The `currency` field defaults to PLN but supports other currencies.
 - **User-Friendly:** Intuitive web interface for managing data.
 
+---
+
 ## 📂 Project Structure
 ```
 src/main/java
@@ -97,12 +99,14 @@ cd WSB-second-course-databases-final-project
 .\mvnw spring-boot:run
 ```
 
+---
+
 ## 🛑 FAQ
 ### Q: Why can’t I add an employee?:
  + **A:** To add an employee, you must first create a department. An employee cannot be hired without being assigned to a specific department.
 
+---
 # Contact
-
 + Email: [steamdlmb@gmail.com](mailto:steamdlmb@gmail.com)
 + [Telegram](https://telegram.me/moldavets)
 + [Linkedin](https://www.linkedin.com/in/bohdan-moldavets/)
