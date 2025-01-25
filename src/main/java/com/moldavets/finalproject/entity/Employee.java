@@ -32,7 +32,7 @@ public class Employee {
     private String department;
 
     @NotNull(message = "is required")
-    @Column(name="birthday")
+    @Column(name="birthday", length = 12)
     private String birthday;
 
     @OneToOne(mappedBy = "employee",
