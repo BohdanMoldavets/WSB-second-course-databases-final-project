@@ -11,88 +11,88 @@ import java.util.List;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final EmployeeRepository EMPLOYEE_REPOSITORY;
+    private final EmployeeRepository employeeRepository;
 
     public EmployeeServiceImpl (EmployeeRepository employeeRepository) {
-        this.EMPLOYEE_REPOSITORY = employeeRepository;
+        this.employeeRepository = employeeRepository;
     }
 
     @Override
     public List<Employee> getAll() {
-        return EMPLOYEE_REPOSITORY.findAllByOrderByIdAsc();
+        return employeeRepository.findAllByOrderByIdAsc();
     }
 
     @Override
     public List<Employee> getAllOrderByIdAsc() {
-        return EMPLOYEE_REPOSITORY.findAllByOrderByIdAsc();
+        return employeeRepository.findAllByOrderByIdAsc();
     }
 
     @Override
     public List<Employee> getAllOrderByIdDesc() {
-        return EMPLOYEE_REPOSITORY.findAllByOrderByIdDesc();
+        return employeeRepository.findAllByOrderByIdDesc();
     }
 
     @Override
     public List<Employee> getAllByOrderByFirstNameAsc() {
-        return EMPLOYEE_REPOSITORY.findAllByOrderByFirstNameAsc();
+        return employeeRepository.findAllByOrderByFirstNameAsc();
     }
 
     @Override
     public List<Employee> getAllByOrderByFirstNameDesc() {
-        return EMPLOYEE_REPOSITORY.findAllByOrderByFirstNameDesc();
+        return employeeRepository.findAllByOrderByFirstNameDesc();
     }
 
     @Override
     public List<Employee> getAllByOrderByLastNameAsc() {
-        return EMPLOYEE_REPOSITORY.findAllByOrderByLastNameAsc();
+        return employeeRepository.findAllByOrderByLastNameAsc();
     }
 
     @Override
     public List<Employee> getAllByOrderByLastNameDesc() {
-        return EMPLOYEE_REPOSITORY.findAllByOrderByLastNameDesc();
+        return employeeRepository.findAllByOrderByLastNameDesc();
     }
 
     @Override
     public List<Employee> getAllByOrderByDepartmentAsc() {
-        return EMPLOYEE_REPOSITORY.findAllByOrderByDepartmentAsc();
+        return employeeRepository.findAllByOrderByDepartmentAsc();
     }
 
     @Override
     public List<Employee> getAllByOrderByDepartmentDesc() {
-        return EMPLOYEE_REPOSITORY.findAllByOrderByDepartmentDesc();
+        return employeeRepository.findAllByOrderByDepartmentDesc();
     }
 
     @Override
     public List<Employee> getAllByOrderByBirthdayAsc() {
-        return EMPLOYEE_REPOSITORY.findAllByOrderByBirthdayAsc();
+        return employeeRepository.findAllByOrderByBirthdayAsc();
     }
 
     @Override
     public List<Employee> getAllByOrderByBirthdayDesc() {
-        return EMPLOYEE_REPOSITORY.findAllByOrderByBirthdayDesc();
+        return employeeRepository.findAllByOrderByBirthdayDesc();
     }
 
     @Override
     public List<Employee> getAllByInputString(String query) {
-        return EMPLOYEE_REPOSITORY.findAllByInputString("%" + query + "%");
+        return employeeRepository.findAllByInputString("%" + query + "%");
     }
 
     @Override
     public Employee getById(int id) {
-        return EMPLOYEE_REPOSITORY.findById(id).orElse(null);
+        return employeeRepository.findById(id).orElse(null);
     }
 
     @Override
     @Transactional
     public void save(Employee employee) {
-        EMPLOYEE_REPOSITORY.save(employee);
+        employeeRepository.save(employee);
     }
 
     @Override
     @Transactional
     public void deleteById(int id) {
-        if(EMPLOYEE_REPOSITORY.existsById(id)) {
-            EMPLOYEE_REPOSITORY.deleteById(id);
+        if(employeeRepository.existsById(id)) {
+            employeeRepository.deleteById(id);
         }
     }
 

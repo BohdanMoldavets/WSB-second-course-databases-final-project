@@ -4,8 +4,8 @@ import com.moldavets.finalproject.repository.SalaryRepository;
 import com.moldavets.finalproject.model.Salary;
 import com.moldavets.finalproject.service.SalaryService;
 import jakarta.persistence.EntityManager;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,93 +13,87 @@ import java.util.List;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class SalaryServiceImpl implements SalaryService {
 
-    private final SalaryRepository SALARY_REPOSITORY;
-    private final EntityManager ENTITY_MANAGER;
-
-    @Autowired
-    public SalaryServiceImpl(SalaryRepository SALARY_REPOSITORY, EntityManager entityManager) {
-        this.SALARY_REPOSITORY = SALARY_REPOSITORY;
-        this.ENTITY_MANAGER = entityManager;
-    }
-
+    private final SalaryRepository salaryRepository;
+    private final EntityManager entityManager;
 
     @Override
     public List<Salary> getAll() {
-        return SALARY_REPOSITORY.findAll();
+        return salaryRepository.findAll();
     }
 
     @Override
     public Salary getById(int id) {
-        return SALARY_REPOSITORY.findById(id).orElse(null);
+        return salaryRepository.findById(id).orElse(null);
     }
 
     @Override
     public List<Salary> getAllOrderByIdAsc() {
-        return SALARY_REPOSITORY.findAllByOrderByIdAsc();
+        return salaryRepository.findAllByOrderByIdAsc();
     }
 
     @Override
     public List<Salary> getAllOrderByIdDesc() {
-        return SALARY_REPOSITORY.findAllByOrderByIdDesc();
+        return salaryRepository.findAllByOrderByIdDesc();
     }
 
     @Override
     public List<Salary> getAllOrderByEmployeeIdAsc() {
-        return SALARY_REPOSITORY.findAllByOrderByEmployeeIdAsc();
+        return salaryRepository.findAllByOrderByEmployeeIdAsc();
     }
 
     @Override
     public List<Salary> getAllOrderByEmployeeIdDesc() {
-        return SALARY_REPOSITORY.findAllByOrderByEmployeeIdDesc();
+        return salaryRepository.findAllByOrderByEmployeeIdDesc();
     }
 
     @Override
     public List<Salary> getAllOrderByEmployeeFirstNameAsc() {
-        return SALARY_REPOSITORY.findAllByOrderByEmployeeFirstNameAsc();
+        return salaryRepository.findAllByOrderByEmployeeFirstNameAsc();
     }
 
     @Override
     public List<Salary> getAllOrderByEmployeeFirstNameDesc() {
-        return SALARY_REPOSITORY.findAllByOrderByEmployeeFirstNameDesc();
+        return salaryRepository.findAllByOrderByEmployeeFirstNameDesc();
     }
 
     @Override
     public List<Salary> getAllOrderByAmountAsc() {
-        return SALARY_REPOSITORY.findAllByOrderByAmountAsc();
+        return salaryRepository.findAllByOrderByAmountAsc();
     }
 
     @Override
     public List<Salary> getAllOrderByAmountDesc() {
-        return SALARY_REPOSITORY.findAllByOrderByAmountDesc();
+        return salaryRepository.findAllByOrderByAmountDesc();
     }
 
     @Override
     public List<Salary> getAllOrderByCurrencyAsc() {
-        return SALARY_REPOSITORY.findAllByOrderByCurrencyAsc();
+        return salaryRepository.findAllByOrderByCurrencyAsc();
     }
 
     @Override
     public List<Salary> getAllOrderByCurrencyDesc() {
-        return SALARY_REPOSITORY.findAllByOrderByCurrencyDesc();
+        return salaryRepository.findAllByOrderByCurrencyDesc();
     }
 
     @Override
     public List<Salary> getAllByInputString(String query) {
-        return SALARY_REPOSITORY.findAllByInputString("%" + query + "%");
+        return salaryRepository.findAllByInputString("%" + query + "%");
     }
 
     @Override
     @Transactional
     public void save(Salary salary) {
-        SALARY_REPOSITORY.save(salary);
+        salaryRepository.save(salary);
     }
 
     @Override
     @Transactional
     public void update(Salary salary) {
-        ENTITY_MANAGER.createQuery("UPDATE Salary SET amount=:amount, currency=:currency WHERE id=:id")
+        entityManager.createQuery("UPDATE Salary SET amount=:amount, currency=:currency WHERE id=:id")
                 .setParameter("amount", salary.getAmount())
                 .setParameter("currency", salary.getCurrency())
                 .setParameter("id", salary.getId())

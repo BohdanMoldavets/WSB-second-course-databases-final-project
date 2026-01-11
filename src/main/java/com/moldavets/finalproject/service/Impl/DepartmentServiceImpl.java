@@ -3,73 +3,69 @@ package com.moldavets.finalproject.service.Impl;
 import com.moldavets.finalproject.repository.DepartmentRepository;
 import com.moldavets.finalproject.model.Department;
 import com.moldavets.finalproject.service.DepartmentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class DepartmentServiceImpl implements DepartmentService {
 
-    private final DepartmentRepository DEPARTMENT_REPOSITORY;
-
-    @Autowired
-    public DepartmentServiceImpl(DepartmentRepository departmentRepository) {
-        this.DEPARTMENT_REPOSITORY = departmentRepository;
-    }
+    private final DepartmentRepository departmentRepository;
 
     @Override
     public List<Department> getAll() {
-        return DEPARTMENT_REPOSITORY.findAll();
+        return departmentRepository.findAll();
     }
 
     @Override
     public Department getById(int id) {
-        return DEPARTMENT_REPOSITORY.findById(id).orElse(null);
+        return departmentRepository.findById(id).orElse(null);
     }
 
     @Override
     public List<Department> getAllOrderByIdAsc() {
-        return DEPARTMENT_REPOSITORY.findAllByOrderByIdAsc();
+        return departmentRepository.findAllByOrderByIdAsc();
     }
 
     @Override
     public List<Department> getAllOrderByIdDesc() {
-        return DEPARTMENT_REPOSITORY.findAllByOrderByIdDesc();
+        return departmentRepository.findAllByOrderByIdDesc();
     }
 
     @Override
     public List<Department> getAllOrderByAbbreviationAsc() {
-        return DEPARTMENT_REPOSITORY.findAllByOrderByAbbreviationAsc();
+        return departmentRepository.findAllByOrderByAbbreviationAsc();
     }
 
     @Override
     public List<Department> getAllOrderByAbbreviationDesc() {
-        return DEPARTMENT_REPOSITORY.findAllByOrderByAbbreviationDesc();
+        return departmentRepository.findAllByOrderByAbbreviationDesc();
     }
 
     @Override
     public List<Department> getAllOrderByNameAsc() {
-        return DEPARTMENT_REPOSITORY.findAllByOrderByNameAsc();
+        return departmentRepository.findAllByOrderByNameAsc();
     }
 
     @Override
     public List<Department> getAllOrderByNameDesc() {
-        return DEPARTMENT_REPOSITORY.findAllByOrderByNameDesc();
+        return departmentRepository.findAllByOrderByNameDesc();
     }
 
     @Override
     @Transactional
     public void save(Department department) {
-        DEPARTMENT_REPOSITORY.save(department);
+        departmentRepository.save(department);
     }
 
     @Override
     @Transactional
     public void delete(int departmentId) {
-        if(DEPARTMENT_REPOSITORY.existsById(departmentId)) {
-            DEPARTMENT_REPOSITORY.deleteById(departmentId);
+        if(departmentRepository.existsById(departmentId)) {
+            departmentRepository.deleteById(departmentId);
         }
     }
 
