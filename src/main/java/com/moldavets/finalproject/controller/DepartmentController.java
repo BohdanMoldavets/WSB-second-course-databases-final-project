@@ -1,9 +1,9 @@
-package com.moldavets.finalproject.rest;
+package com.moldavets.finalproject.controller;
 
-import com.moldavets.finalproject.entity.Department;
+import com.moldavets.finalproject.model.Department;
 import com.moldavets.finalproject.service.DepartmentService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,14 +15,10 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/departments")
+@RequiredArgsConstructor
 public class DepartmentController {
 
-    private final DepartmentService DEPARTMENT_SERVICE;
-
-    @Autowired
-    public DepartmentController(DepartmentService departmentService) {
-        DEPARTMENT_SERVICE = departmentService;
-    }
+    private final DepartmentService departmentService;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -36,16 +32,16 @@ public class DepartmentController {
         List<Department> departments;
         if(sort != null) {
             departments = switch (sort) {
-                case "idOrderByAsc" -> DEPARTMENT_SERVICE.getAllOrderByIdAsc();
-                case "idOrderByDesc" -> DEPARTMENT_SERVICE.getAllOrderByIdDesc();
-                case "abbreviationOrderByAsc" -> DEPARTMENT_SERVICE.getAllOrderByAbbreviationAsc();
-                case "abbreviationOrderByDesc" -> DEPARTMENT_SERVICE.getAllOrderByAbbreviationDesc();
-                case "nameOrderByAsc" -> DEPARTMENT_SERVICE.getAllOrderByNameAsc();
-                case "nameOrderByDesc" -> DEPARTMENT_SERVICE.getAllOrderByNameDesc();
-                default -> DEPARTMENT_SERVICE.getAll();
+                case "idOrderByAsc" -> departmentService.getAllOrderByIdAsc();
+                case "idOrderByDesc" -> departmentService.getAllOrderByIdDesc();
+                case "abbreviationOrderByAsc" -> departmentService.getAllOrderByAbbreviationAsc();
+                case "abbreviationOrderByDesc" -> departmentService.getAllOrderByAbbreviationDesc();
+                case "nameOrderByAsc" -> departmentService.getAllOrderByNameAsc();
+                case "nameOrderByDesc" -> departmentService.getAllOrderByNameDesc();
+                default -> departmentService.getAll();
             };
         } else {
-            departments = DEPARTMENT_SERVICE.getAll();
+            departments = departmentService.getAll();
         }
 
         model.addAttribute("departments", departments);
@@ -61,7 +57,7 @@ public class DepartmentController {
     @GetMapping("/updateForm")
     public String updateForm(@RequestParam("departmentId") int departmentId,
                              Model model) {
-        Department department = DEPARTMENT_SERVICE.getById(departmentId);
+        Department department = departmentService.getById(departmentId);
         if(department == null) {
             return "redirect:/departments/?departmentNotFound=" + departmentId;
         } else {
@@ -78,7 +74,7 @@ public class DepartmentController {
             return "departments/departmentsAddForm";
         }
 
-        DEPARTMENT_SERVICE.save(department);
+        departmentService.save(department);
         return "redirect:/departments/?addedDepartmentId=" + department.getId();
     }
 
@@ -88,13 +84,13 @@ public class DepartmentController {
         if(bindingResult.hasErrors()) {
             return "redirect:/departments/updateForm?departmentId=" + department.getId() + "&error";
         }
-        DEPARTMENT_SERVICE.save(department);
+        departmentService.save(department);
         return "redirect:/departments/?updatedDepartmentId=" + department.getId();
     }
 
     @PostMapping("/delete")
     public String deleteDepartment(@RequestParam("departmentId") int departmentId) {
-        DEPARTMENT_SERVICE.delete(departmentId);
+        departmentService.delete(departmentId);
         return "redirect:/departments/?deletedDepartmentId=" + departmentId;
     }
 }

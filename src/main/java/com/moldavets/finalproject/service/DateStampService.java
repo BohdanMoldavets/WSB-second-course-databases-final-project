@@ -1,7 +1,6 @@
 package com.moldavets.finalproject.service;
 
-import com.moldavets.finalproject.entity.DateStamp;
-import com.moldavets.finalproject.entity.Employee;
+import com.moldavets.finalproject.model.DateStamp;
 
 import java.util.List;
 

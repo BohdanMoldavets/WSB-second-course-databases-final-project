@@ -1,7 +1,7 @@
 package com.moldavets.finalproject.service;
 
 
-import com.moldavets.finalproject.entity.Employee;
+import com.moldavets.finalproject.model.Employee;
 
 import java.util.List;
 

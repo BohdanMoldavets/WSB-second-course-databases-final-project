@@ -1,4 +1,4 @@
-package com.moldavets.finalproject.entity;
+package com.moldavets.finalproject.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;

@@ -1,6 +1,6 @@
-package com.moldavets.finalproject.rest;
+package com.moldavets.finalproject.controller;
 
-import com.moldavets.finalproject.entity.Salary;
+import com.moldavets.finalproject.model.Salary;
 import com.moldavets.finalproject.service.SalaryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

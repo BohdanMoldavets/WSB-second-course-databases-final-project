@@ -1,6 +1,6 @@
-package com.moldavets.finalproject.dao;
+package com.moldavets.finalproject.repository;
 
-import com.moldavets.finalproject.entity.DateStamp;
+import com.moldavets.finalproject.model.DateStamp;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

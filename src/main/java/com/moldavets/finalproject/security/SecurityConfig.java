@@ -25,6 +25,7 @@ public class SecurityConfig {
                         .requestMatchers("/").permitAll()
 
                         .requestMatchers("/employees/").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
                         .requestMatchers("/employees/save").hasRole("MANAGER")
                         .requestMatchers("/employees/update").hasRole("MANAGER")
                         .requestMatchers("/employees/updateForm").hasRole("MANAGER")

@@ -1,9 +1,9 @@
-package com.moldavets.finalproject.rest;
+package com.moldavets.finalproject.controller;
 
-import com.moldavets.finalproject.entity.DateStamp;
-import com.moldavets.finalproject.entity.Salary;
+import com.moldavets.finalproject.model.DateStamp;
 import com.moldavets.finalproject.service.DateStampService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
@@ -18,14 +18,10 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/datestamps")
+@RequiredArgsConstructor
 public class DateStampController {
 
-    private final DateStampService DATE_STAMP_SERVICE;
-
-    @Autowired
-    public DateStampController(DateStampService DATE_STAMP_SERVICE) {
-        this.DATE_STAMP_SERVICE = DATE_STAMP_SERVICE;
-    }
+    private final DateStampService dateStampService;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -41,20 +37,20 @@ public class DateStampController {
 
         if(sort != null) {
             dateStamps = switch (sort) {
-                case "idOrderByASC" -> DATE_STAMP_SERVICE.getAllOrderByIdAsc();
-                case "idOrderByDesc" -> DATE_STAMP_SERVICE.getAllOrderByIdDesc();
-                case "employeeIdOrderByAsc" -> DATE_STAMP_SERVICE.getAllOrderByEmployeeIdAsc();
-                case "employeeIdOrderByDesc" -> DATE_STAMP_SERVICE.getAllOrderByEmployeeIdDesc();
-                case "employeeNameOrderByAsc" -> DATE_STAMP_SERVICE.getAllOrderByEmployeeFirstNameAsc();
-                case "employeeNameOrderByDesc" -> DATE_STAMP_SERVICE.getAllOrderByEmployeeFirstNameDesc();
-                case "employmentDateOrderByAsc" -> DATE_STAMP_SERVICE.getAllOrderByEmploymentDateAsc();
-                case "employmentDateOrderByDesc" -> DATE_STAMP_SERVICE.getAllOrderByEmploymentDateDesc();
-                case "paymentDateOrderByAsc" -> DATE_STAMP_SERVICE.getAllOrderByPaymentDateAsc();
-                case "paymentDateOrderByDesc" -> DATE_STAMP_SERVICE.getAllOrderByPaymentDateDesc();
-                default -> DATE_STAMP_SERVICE.getAll();
+                case "idOrderByASC" -> dateStampService.getAllOrderByIdAsc();
+                case "idOrderByDesc" -> dateStampService.getAllOrderByIdDesc();
+                case "employeeIdOrderByAsc" -> dateStampService.getAllOrderByEmployeeIdAsc();
+                case "employeeIdOrderByDesc" -> dateStampService.getAllOrderByEmployeeIdDesc();
+                case "employeeNameOrderByAsc" -> dateStampService.getAllOrderByEmployeeFirstNameAsc();
+                case "employeeNameOrderByDesc" -> dateStampService.getAllOrderByEmployeeFirstNameDesc();
+                case "employmentDateOrderByAsc" -> dateStampService.getAllOrderByEmploymentDateAsc();
+                case "employmentDateOrderByDesc" -> dateStampService.getAllOrderByEmploymentDateDesc();
+                case "paymentDateOrderByAsc" -> dateStampService.getAllOrderByPaymentDateAsc();
+                case "paymentDateOrderByDesc" -> dateStampService.getAllOrderByPaymentDateDesc();
+                default -> dateStampService.getAll();
             };
         } else {
-            dateStamps = DATE_STAMP_SERVICE.getAll();
+            dateStamps = dateStampService.getAll();
         }
 
         model.addAttribute("dateStamps", dateStamps);
@@ -65,7 +61,7 @@ public class DateStampController {
     public String updateForm(@RequestParam("dateStampId") int dateStampId,
                              Model model) {
 
-        DateStamp dateStamp = DATE_STAMP_SERVICE.getById(dateStampId);
+        DateStamp dateStamp = dateStampService.getById(dateStampId);
 
         if(dateStamp == null) {
             return "redirect:/datestamps/?dateStampNotFound=" + dateStampId;
@@ -78,11 +74,11 @@ public class DateStampController {
     @PostMapping("/makePayment")
     public String makePayment(@RequestParam("dateStampId") int dateStampId) {
 
-        DateStamp dateStamp = DATE_STAMP_SERVICE.getById(dateStampId);
+        DateStamp dateStamp = dateStampService.getById(dateStampId);
 
         if(dateStamp != null) {
             dateStamp.setPaymentDate(LocalDate.now().plusMonths(1).toString());
-            DATE_STAMP_SERVICE.update(dateStamp);
+            dateStampService.update(dateStamp);
         } else {
             return "redirect:/datestamps/?dateStampNotFound=" + dateStampId;
         }
@@ -98,9 +94,9 @@ public class DateStampController {
 
         if(query != null) {
             if(sort != null) {
-                model.addAttribute("dateStamps", sortDateStamps(DATE_STAMP_SERVICE.getAllByInputString(query), sort));
+                model.addAttribute("dateStamps", sortDateStamps(dateStampService.getAllByInputString(query), sort));
             } else {
-                model.addAttribute("dateStamps", DATE_STAMP_SERVICE.getAllByInputString(query));
+                model.addAttribute("dateStamps", dateStampService.getAllByInputString(query));
             }
             return "datestamps/datestamps";
         } else {
@@ -114,7 +110,7 @@ public class DateStampController {
         if(bindingResult.hasErrors()) {
             return "redirect:/datestamps/updateForm?dateStampId=" + dateStamp.getId() + "&error";
         }
-        DATE_STAMP_SERVICE.update(dateStamp);
+        dateStampService.update(dateStamp);
         return "redirect:/datestamps/?updatedDateStampId=" + dateStamp.getId();
     }
 

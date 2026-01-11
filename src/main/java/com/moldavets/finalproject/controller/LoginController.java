@@ -1,4 +1,4 @@
-package com.moldavets.finalproject.rest;
+package com.moldavets.finalproject.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,6 +1,6 @@
-package com.moldavets.finalproject.dao;
+package com.moldavets.finalproject.repository;
 
-import com.moldavets.finalproject.entity.Department;
+import com.moldavets.finalproject.model.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

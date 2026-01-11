@@ -1,9 +1,8 @@
 package com.moldavets.finalproject.service.Impl;
 
-import com.moldavets.finalproject.dao.EmployeeRepository;
-import com.moldavets.finalproject.entity.Employee;
+import com.moldavets.finalproject.repository.EmployeeRepository;
+import com.moldavets.finalproject.model.Employee;
 import com.moldavets.finalproject.service.EmployeeService;
-import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

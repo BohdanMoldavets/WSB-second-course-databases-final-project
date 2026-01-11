@@ -1,11 +1,7 @@
-package com.moldavets.finalproject.entity;
+package com.moldavets.finalproject.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
-import lombok.Builder;
 import lombok.Data;
-
-import java.util.Date;
 
 @Data
 @Entity

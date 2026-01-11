@@ -74,8 +74,8 @@
                         <option value="employeeNameOrderByDesc">Employee Name Sorted in descending order</option>
                         <option value="employmentDateOrderByAsc">Employment Date Sorted in ascending order</option>
                         <option value="employmentDateOrderByDesc">Employment Date Sorted in descending order</option>
-                        <option value="paymentDateOrderByAsc">Payment Date Sorted in ascending order</option>
-                        <option value="paymentDateOrderByDesc">Payment Date in descending order</option>
+                        <option value="paymentDateOrderByAsc">Next Payment Date Sorted in ascending order</option>
+                        <option value="paymentDateOrderByDesc">Next Payment Date in descending order</option>
                     </select>
                 </label>
                 <input type="submit" value="Sort">
@@ -111,7 +111,7 @@
             <th>Employee Id</th>
             <th>Employee Name</th>
             <th>Employment Date</th>
-            <th>Payment Date</th>
+            <th>Next Payment Date</th>
             <th sec:authorize="hasRole('MANAGER')">Action</th>
         </tr>
         </thead>

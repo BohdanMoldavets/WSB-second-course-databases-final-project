@@ -1,17 +1,15 @@
-package com.moldavets.finalproject.rest;
+package com.moldavets.finalproject.controller;
 
-import com.moldavets.finalproject.entity.DateStamp;
-import com.moldavets.finalproject.entity.Employee;
-import com.moldavets.finalproject.entity.Salary;
+import com.moldavets.finalproject.model.DateStamp;
+import com.moldavets.finalproject.model.Employee;
+import com.moldavets.finalproject.model.Salary;
 import com.moldavets.finalproject.service.DateStampService;
 import com.moldavets.finalproject.service.DepartmentService;
 import com.moldavets.finalproject.service.EmployeeService;
 import com.moldavets.finalproject.service.SalaryService;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,27 +19,16 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/employees")
+@RequiredArgsConstructor
 public class EmployeeController {
 
-    private final EmployeeService EMPLOYEE_SERVICE;
-    private final DepartmentService DEPARTMENT_SERVICE;
-    private final SalaryService SALARY_SERVICE;
-    private final DateStampService DATE_STAMP_SERVICE;
-
-    @Autowired
-    public EmployeeController(EmployeeService employeeService,
-                              DepartmentService departmentService,
-                              SalaryService salaryService,
-                              DateStampService dateStampService) {
-        this.EMPLOYEE_SERVICE = employeeService;
-        this.DEPARTMENT_SERVICE = departmentService;
-        this.SALARY_SERVICE = salaryService;
-        this.DATE_STAMP_SERVICE = dateStampService;
-    }
+    private final EmployeeService employeeService;
+    private final DepartmentService departmentService;
+    private final SalaryService salaryService;
+    private final DateStampService dateStampService;
 
     @InitBinder
     public void initBinder(WebDataBinder binder) {
@@ -62,20 +49,20 @@ public class EmployeeController {
         if(sort != null) {
             employees = switch (sort) {
 
-                case "IdOrderByAsc" -> EMPLOYEE_SERVICE.getAllOrderByIdAsc();
-                case "IdOrderByDesc" -> EMPLOYEE_SERVICE.getAllOrderByIdDesc();
-                case "firstNameOrderByAsc" -> EMPLOYEE_SERVICE.getAllByOrderByFirstNameAsc();
-                case "firstNameOrderByDesc" -> EMPLOYEE_SERVICE.getAllByOrderByFirstNameDesc();
-                case "lastNameOrderByAsc" -> EMPLOYEE_SERVICE.getAllByOrderByLastNameAsc();
-                case "lastNameOrderByDesc" -> EMPLOYEE_SERVICE.getAllByOrderByLastNameDesc();
-                case "departmentOrderByAsc" -> EMPLOYEE_SERVICE.getAllByOrderByDepartmentAsc();
-                case "departmentOrderByDesc" -> EMPLOYEE_SERVICE.getAllByOrderByDepartmentDesc();
-                case "birthdayOrderByAsc" -> EMPLOYEE_SERVICE.getAllByOrderByBirthdayAsc();
-                case "birthdayOrderByDesc" -> EMPLOYEE_SERVICE.getAllByOrderByBirthdayDesc();
-                default -> EMPLOYEE_SERVICE.getAll();
+                case "IdOrderByAsc" -> employeeService.getAllOrderByIdAsc();
+                case "IdOrderByDesc" -> employeeService.getAllOrderByIdDesc();
+                case "firstNameOrderByAsc" -> employeeService.getAllByOrderByFirstNameAsc();
+                case "firstNameOrderByDesc" -> employeeService.getAllByOrderByFirstNameDesc();
+                case "lastNameOrderByAsc" -> employeeService.getAllByOrderByLastNameAsc();
+                case "lastNameOrderByDesc" -> employeeService.getAllByOrderByLastNameDesc();
+                case "departmentOrderByAsc" -> employeeService.getAllByOrderByDepartmentAsc();
+                case "departmentOrderByDesc" -> employeeService.getAllByOrderByDepartmentDesc();
+                case "birthdayOrderByAsc" -> employeeService.getAllByOrderByBirthdayAsc();
+                case "birthdayOrderByDesc" -> employeeService.getAllByOrderByBirthdayDesc();
+                default -> employeeService.getAll();
             };
         } else {
-            employees = EMPLOYEE_SERVICE.getAll();
+            employees = employeeService.getAll();
         }
 
         model.addAttribute("employees", employees);
@@ -84,8 +71,11 @@ public class EmployeeController {
 
     @GetMapping("/add")
     public String getAddEmployeePage(Model model) {
+        if (departmentService.getAll().isEmpty()) {
+           return "redirect:/employees/?departmentError";
+        }
         model.addAttribute("employee", new Employee());
-        model.addAttribute("departments", DEPARTMENT_SERVICE.getAll());
+        model.addAttribute("departments", departmentService.getAll());
         return "employees/employeesAddForm";
     }
 
@@ -93,13 +83,13 @@ public class EmployeeController {
     public String getUpdateEmployeePage(
             @RequestParam("employeeId") int employeeId,
             Model model) {
-        Employee employee = EMPLOYEE_SERVICE.getById(employeeId);
+        Employee employee = employeeService.getById(employeeId);
         if (employee == null) {
             model.addAttribute("employeeNotFound", new Employee());
             return "redirect:/employees/?employeeNotFound=" + employeeId;
         } else {
             model.addAttribute("employee", employee);
-            model.addAttribute("departments", DEPARTMENT_SERVICE.getAll());
+            model.addAttribute("departments", departmentService.getAll());
             return "employees/employeesUpdateForm";
         }
     }
@@ -112,9 +102,9 @@ public class EmployeeController {
 
         if(query != null) {
             if(sort != null) {
-                model.addAttribute("employees", sortEmployees(EMPLOYEE_SERVICE.getAllByInputString(query), sort));
+                model.addAttribute("employees", sortEmployees(employeeService.getAllByInputString(query), sort));
             } else {
-                model.addAttribute("employees", EMPLOYEE_SERVICE.getAllByInputString(query));
+                model.addAttribute("employees", employeeService.getAllByInputString(query));
             }
             return "employees/employees";
         } else {
@@ -128,7 +118,7 @@ public class EmployeeController {
                                  @RequestParam(value = "sort", required = false) String sort,
                                  Model model) {
 
-        List<Employee> employees = EMPLOYEE_SERVICE.getAll();
+        List<Employee> employees = employeeService.getAll();
 
         if(department != null && birthday != null) {
             employees = employees.stream()
@@ -162,7 +152,7 @@ public class EmployeeController {
             return "redirect:/employees/updateForm?employeeId=" + employee.getId() + "&error";
         }
 
-        EMPLOYEE_SERVICE.save(employee);
+        employeeService.save(employee);
         return "redirect:/employees/?updatedEmployeeId=" + employee.getId();
     }
 
@@ -176,24 +166,24 @@ public class EmployeeController {
 
         Salary tempSalary = employee.getSalary();
         tempSalary.setEmployee(employee);
-        SALARY_SERVICE.save(tempSalary);
+        salaryService.save(tempSalary);
 
         DateStamp tempDateStamp = new DateStamp(
                 employee,
                 LocalDate.now().toString(),
                 LocalDate.now().plusMonths(1).toString()
         );
-        DATE_STAMP_SERVICE.save(tempDateStamp);
+        dateStampService.save(tempDateStamp);
 
         employee.setDate(tempDateStamp);
 
-        EMPLOYEE_SERVICE.save(employee);
+        employeeService.save(employee);
         return "redirect:/employees/?addedEmployeeId=" + employee.getId();
     }
 
     @PostMapping("/delete")
     public String delete(@RequestParam("employeeId") int employeeId) {
-        EMPLOYEE_SERVICE.deleteById(employeeId);
+        employeeService.deleteById(employeeId);
         return "redirect:/employees/?deletedEmployeeId=" + employeeId;
     }
 

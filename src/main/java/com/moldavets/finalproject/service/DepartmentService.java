@@ -1,6 +1,6 @@
 package com.moldavets.finalproject.service;
 
-import com.moldavets.finalproject.entity.Department;
+import com.moldavets.finalproject.model.Department;
 
 import java.util.List;
 

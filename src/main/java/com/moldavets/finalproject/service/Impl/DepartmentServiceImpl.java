@@ -1,9 +1,8 @@
 package com.moldavets.finalproject.service.Impl;
 
-import com.moldavets.finalproject.dao.DepartmentRepository;
-import com.moldavets.finalproject.entity.Department;
+import com.moldavets.finalproject.repository.DepartmentRepository;
+import com.moldavets.finalproject.model.Department;
 import com.moldavets.finalproject.service.DepartmentService;
-import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

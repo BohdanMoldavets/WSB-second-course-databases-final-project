@@ -1,4 +1,4 @@
-package com.moldavets.finalproject.rest;
+package com.moldavets.finalproject.controller;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.http.HttpServletRequest;

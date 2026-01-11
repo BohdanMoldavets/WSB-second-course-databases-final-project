@@ -78,16 +78,12 @@
                        oninput="this.value = this.value.slice(0, 3)"
                        title="Please enter only 3 characters"/>
 
-                <input type="text" name="birthday"
-                       placeholder="Birthday"
-                       th:value="${param.birthday}"
-                       oninput="this.value = this.value.replace(/[^0-9]/g, '');"
-                       title="Please enter only numbers"/>
-
                 <input type="submit" value="Filter"/>
             </form>
         </div>
     </div>
+
+    <span th:if="${param.departmentError}" style="color: red">To add an employee, you must add at least one department.</span>
 
     <div class="navbar align-items-center justify-content-between"
          sec:authorize="hasRole('MANAGER')"
@@ -99,6 +95,7 @@
                 Add Employee
             </a>
         </div>
+
 
         <div>
             <form>

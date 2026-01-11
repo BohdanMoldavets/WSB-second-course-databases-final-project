@@ -1,7 +1,7 @@
 package com.moldavets.finalproject.service.Impl;
 
-import com.moldavets.finalproject.dao.SalaryRepository;
-import com.moldavets.finalproject.entity.Salary;
+import com.moldavets.finalproject.repository.SalaryRepository;
+import com.moldavets.finalproject.model.Salary;
 import com.moldavets.finalproject.service.SalaryService;
 import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;

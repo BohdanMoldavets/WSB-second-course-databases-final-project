@@ -1,6 +1,6 @@
 package com.moldavets.finalproject.service;
 
-import com.moldavets.finalproject.entity.Salary;
+import com.moldavets.finalproject.model.Salary;
 
 import java.util.List;
 
